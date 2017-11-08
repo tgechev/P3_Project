@@ -24,8 +24,6 @@ static void help()
 		<< endl;
 }
 
-const int w = 500;
-
 
 vector<vector<Point> > contours; //this should more or less store all detected blobs
 
@@ -49,39 +47,75 @@ int main(int argc, char**)
 		//unconditional loop
 		while (true) {
 
-			Mat cameraFrame;					//matrix for the color frame
-			Mat thresholdedFrame;				//matrix for the thresholded frame
-			stream1.read(cameraFrame);			//read frame from camera
+			Mat cameraFrame; 
 
-			cvtColor(cameraFrame, thresholdedFrame, CV_BGR2GRAY);		//convert color frame to grayscale
-
-			threshold(thresholdedFrame, thresholdedFrame, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);  //threshold grayscale image
-
-			imshow("cam", cameraFrame);
-
+			Mat thresholdedFrame;
 			
-			vector<vector<Point> > contours0;  //auxiliary object for resizing blobs -ish
+			stream1.read(cameraFrame);
 
-			findContours(thresholdedFrame, contours0, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE); //find contours/blobs
+			Rect roi(0, cameraFrame.rows / 3, cameraFrame.cols, cameraFrame.rows / 3);  //define region of interest (roi) rectangle
+
+			cvtColor(cameraFrame, thresholdedFrame, CV_BGR2GRAY);  //convert frame to grayscale
+
+			medianBlur(thresholdedFrame, thresholdedFrame, 5);     //blur the grayscale frame to remove noise as much as possible
+
+			threshold(thresholdedFrame, thresholdedFrame, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);  //threshold grayscale frame
+
+			Mat roiMatrix(thresholdedFrame, roi);  //define roi matrix for blob detection
+
+
+			vector<vector<Point> > contours0;
+
+			findContours(roiMatrix, contours0, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE);  //find blobs in the roiMatrix
 
 			contours.resize(contours0.size());
-			for (size_t k = 0; k < contours0.size(); k++)				//simplify blobs -ish
-				approxPolyDP(Mat(contours0[k]), contours[k], 3, true);
+			for (size_t k = 0; k < contours0.size(); k++)
+				//approximation of blob
+				approxPolyDP(Mat(contours0[k]), contours[k], 2, true);
 				
 			namedWindow("contours", 1);
 
-			Mat cnt_img = Mat::zeros(cameraFrame.rows, cameraFrame.cols, CV_8UC3);  //new matrix with drawn blobs in it
+			Mat cnt_img = Mat::zeros(cameraFrame.rows, cameraFrame.cols, CV_8UC3);   //matrix for displaying frame with blob detection
 
-			int idx = 0;
+			/*  Sorting blobs
+			for (int i = 0; i < contours.size() - 1; i++) {
+				int j = i + 1;
+				while (j > 0) {
+					if (contours[j - 1].size() < contours[j].size()) {
+						vector<Point> temp = contours[j - 1];
+						contours[j - 1] = contours[j];
+						contours[j] = temp;
+					}
+					j--;
+				}
+			}*/
 
-			for (; idx >= 0; idx = hierarchy[idx][0])
-			{
-				Scalar color(128, 255, 255);
-				drawContours(cnt_img, contours, idx, color, -1, 8, hierarchy);  //draw blobs in the cnt_img matrix
-			}
+			//int idx = 0;
 
-			imshow("contours", cnt_img);							//show image with blobs
-			cout << "Number of blobs: " << contours.size() << endl;		//display number of blobs
+			//for (; idx >= 0; idx = hierarchy[idx][0])
+			//{
+				Scalar color(188, 255, 255);
+				drawContours(cnt_img, contours, -1, color, -1, 8, hierarchy, 2, Point(0, cameraFrame.rows/3));          //draw found blobs in cnt_img matrix
+				
+				//draws a bounding box/rectangle around a blob - (contours[idx])
+				
+				//draw bounding box for smallest blob (contours[contours.size()-1]) | for biggest blob (contours[0])
+				//rectangle(cameraFrame, roi /*boundingRect(contours[contours.size()-1])*/, Scalar(255, 0, 0), 2);
+			//}
+
+			rectangle(cameraFrame, roi /*boundingRect(contours[contours.size()-1])*/, Scalar(255, 0, 0), 2);   //draw rectangle in the color frame showing the roi
+			
+			imshow("cam", cameraFrame);           //show color frame
+
+			//imshow("blur", thresholdedFrame);
+
+			imshow("contours", cnt_img);        //show blob detection frame
+
+			cout << "Number of blobs: " << contours.size() /*<< " contours0[0].size: " << contours[0].size()*/ << endl;
+
+
+			//area of blob | perimeter of blob
+			//cout<<"contourArea(contours[0]): "<<contourArea(contours[0])<<" arcLength(contours[0],true): "<< arcLength(contours[0], true)<<endl;
 			if (waitKey(30) >= 0)
 				break;
 		}
