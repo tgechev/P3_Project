@@ -11,6 +11,7 @@ string winName = "MAIN MENU";
 Mat img;
 
 int level = 0;
+bool LOLOLLLLL;
 
 Rect btnTutorial;
 Rect btnOptions;
