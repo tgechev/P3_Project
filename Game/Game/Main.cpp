@@ -3,25 +3,7 @@
 #include <windows.h>
 using namespace cv;
 using namespace std;
-
-
-Mat3b canvas;
-string winName = "MAIN MENU";
-
-Mat img;
-
 int level = 0;
-bool LOLOLLLLL;
-float stupid;
-
-Rect btnTutorial;
-Rect btnOptions;
-Rect btnExit;
-Rect btnLevel1;
-Rect btnLevel2;
-Rect btnLevel3;
-Rect btnRepeat;
-Rect btnConfirm;
 
 int mainMenu();
 
@@ -46,6 +28,7 @@ int main()
 	default:
 		cout << "Invalid level" << endl;
 	}
+	waitKey(0);
 	
 }
 
@@ -71,7 +54,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 		else if (btnLevel1.contains(Point(x, y)))
 		{
 			cout << "Level 1" << endl;
-
+			level = 1;
 		}
 		else if (btnLevel2.contains(Point(x, y)))
 		{
@@ -81,16 +64,26 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 		else if (btnLevel3.contains(Point(x, y)))
 		{
 			cout << "Level 3" << endl;
-
 		}
 
 	}
 
-	imshow(winName, img);
+	//imshow(winName, img);
 	//waitKey(1);
 }
 
 int mainMenu() {
+	Mat3b canvas;
+	string winName = "MAIN MENU";
+	Mat img;
+	Rect btnTutorial;
+	Rect btnOptions;
+	Rect btnExit;
+	Rect btnLevel1;
+	Rect btnLevel2;
+	Rect btnLevel3;
+	Rect btnRepeat;
+	Rect btnConfirm;
 	img = imread("images/bg_menu.jpg", CV_LOAD_IMAGE_COLOR);
 	//making the buttons
 	btnTutorial = Rect(54, 192, 169, 47);
@@ -117,7 +110,7 @@ int mainMenu() {
 
 
 	// Wait until user press some key
-	waitKey(0);
+	
 
 	return 0;
 
