@@ -10,6 +10,8 @@ string winName = "MAIN MENU";
 
 Mat img;
 
+int level = 0;
+
 Rect btnTutorial;
 Rect btnOptions;
 Rect btnExit;
@@ -47,7 +49,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 		}
 		else if (btnLevel1.contains(Point(x, y)))
 		{
-			cout << "Level 1" << endl;
+			level = 1;
 
 		}
 		else if (btnLevel2.contains(Point(x, y)))
