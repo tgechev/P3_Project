@@ -19,6 +19,14 @@ Rect btnLevel3;
 Rect btnRepeat;
 Rect btnConfirm;
 
+int mainMenu();
+
+int main()
+{
+	mainMenu();
+}
+
+
 
 void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 {
@@ -59,8 +67,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 	//waitKey(1);
 }
 
-int main()
-{
+int mainMenu() {
 	img = imread("images/bg_menu.jpg", CV_LOAD_IMAGE_COLOR);
 	//making the buttons
 	btnTutorial = Rect(54, 192, 169, 47);
@@ -92,3 +99,6 @@ int main()
 	return 0;
 
 }
+
+
+
