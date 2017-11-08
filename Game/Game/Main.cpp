@@ -5,6 +5,15 @@ using namespace cv;
 using namespace std;
 int level = 0;
 
+Rect btnTutorial;
+Rect btnOptions;
+Rect btnExit;
+Rect btnLevel1;
+Rect btnLevel2;
+Rect btnLevel3;
+Rect btnRepeat;
+Rect btnConfirm;
+
 int mainMenu();
 
 int main()
@@ -40,7 +49,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 	{
 		if (btnExit.contains(Point(x, y)))
 		{
-			cout << "Exit" << endl;
+			cout << "Exittt" << endl;
 			destroyAllWindows();
 		}
 		else if (btnTutorial.contains(Point(x, y)))
@@ -76,14 +85,7 @@ int mainMenu() {
 	Mat3b canvas;
 	string winName = "MAIN MENU";
 	Mat img;
-	Rect btnTutorial;
-	Rect btnOptions;
-	Rect btnExit;
-	Rect btnLevel1;
-	Rect btnLevel2;
-	Rect btnLevel3;
-	Rect btnRepeat;
-	Rect btnConfirm;
+	
 	img = imread("images/bg_menu.jpg", CV_LOAD_IMAGE_COLOR);
 	//making the buttons
 	btnTutorial = Rect(54, 192, 169, 47);
