@@ -4,7 +4,7 @@
 using namespace cv;
 using namespace std;
 int level = 0;
-
+//lololol
 Rect btnTutorial;
 Rect btnOptions;
 Rect btnExit;
@@ -49,7 +49,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 	{
 		if (btnExit.contains(Point(x, y)))
 		{
-			cout << "Exittt" << endl;
+			cout << "Exitiiiitt" << endl;
 			destroyAllWindows();
 		}
 		else if (btnTutorial.contains(Point(x, y)))
