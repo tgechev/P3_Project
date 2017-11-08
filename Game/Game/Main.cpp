@@ -27,7 +27,26 @@ int mainMenu();
 
 int main()
 {
-	mainMenu();
+	switch (level) {
+	case 0:
+		mainMenu();
+		break;
+	case 1:
+		cout << "Well done" << endl;
+		break;
+	case 2:
+		cout << "You passed" << endl;
+		break;
+	case 3:
+		cout << "Better try again" << endl;
+		break; 
+	case 4:
+		cout << "Better try again" << endl;
+		break;
+	default:
+		cout << "Invalid level" << endl;
+	}
+	
 }
 
 
@@ -51,7 +70,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 		}
 		else if (btnLevel1.contains(Point(x, y)))
 		{
-			level = 1;
+			cout << "Level 1" << endl;
 
 		}
 		else if (btnLevel2.contains(Point(x, y)))
