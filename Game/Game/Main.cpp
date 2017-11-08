@@ -12,6 +12,7 @@ Mat img;
 
 int level = 0;
 bool LOLOLLLLL;
+float stupid;
 
 Rect btnTutorial;
 Rect btnOptions;
