@@ -7,7 +7,7 @@ using namespace std;
 //Comment for Marlene to test! FUCK GITKRAKEN >:(
 
 //Global
-int level = 1;
+int level = 0;
 
 //Level
 string winName = "EXCITING GAME";
