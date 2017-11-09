@@ -4,7 +4,7 @@
 using namespace cv;
 using namespace std;
 
-//Comment for Benjamin to test!
+//Comment for Marlene to test! FUCK GITKRAKEN >:(
 
 //Global
 int level = 0;
