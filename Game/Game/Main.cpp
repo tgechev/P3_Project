@@ -11,8 +11,8 @@ int level = 0;
 string winName = "EXCITING GAME";
 
 Mat img;
-Mat correct = imread("images/correct.png", 0);
-Mat wrong = imread("images/wrong.png", 0);
+Mat correct = imread("images/correct.png", CV_LOAD_IMAGE_COLOR);
+Mat wrong = imread("images/wrong.png", CV_LOAD_IMAGE_COLOR);
 
 
 Rect btnRepeat;
@@ -182,7 +182,7 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 void loadLevel() {
 	Mat3b canvas;
 
-	img = imread("images/bg.png", 0);
+	img = imread("images/bg.png", CV_LOAD_IMAGE_COLOR);
 
 	//making the buttons
 	btnRepeat = Rect(80, 410, 120, 70);
