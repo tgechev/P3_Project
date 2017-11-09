@@ -10,7 +10,7 @@ int level = 0;
 //Level
 string winName = "EXCITING GAME";
 
-Mat bg;
+Mat img;
 Mat correct = imread("images/correct.png", 0);
 Mat wrong = imread("images/wrong.png", 0);
 
@@ -101,8 +101,8 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 
 void mainMenu() {
 	Mat3b canvas;
-	string winName = "MAIN MENU";
-	Mat img;
+	//string winName = "MAIN MENU";
+	//Mat img;
 	
 	img = imread("images/bg_menu.jpg", CV_LOAD_IMAGE_COLOR);
 	//making the buttons
@@ -145,16 +145,16 @@ void Confirm(vector<int> vectInput, int level) {
 	for (int i = 0; i<cardResults.size(); ++i) {
 		cout << "The results are: " << cardResults[i] << endl;
 		if (cardResults[i] == 1) {
-			correct.copyTo(bg(Rect(100 + (160 * i), 100, correct.cols, correct.rows)));
+			correct.copyTo(img(Rect(100 + (160 * i), 100, correct.cols, correct.rows)));
 		}
 		else {
-			wrong.copyTo(bg(Rect(100 + (160 * i), 100, wrong.cols, wrong.rows)));
+			wrong.copyTo(img(Rect(100 + (160 * i), 100, wrong.cols, wrong.rows)));
 					
 		}
 		
 	}
 
-	imshow(winName, bg);
+	imshow(winName, img);
 }
 
 void callBackFunc(int event, int x, int y, int flags, void* userdata)
@@ -182,19 +182,19 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 void loadLevel() {
 	Mat3b canvas;
 
-	bg = imread("images/bg.png", 0);
+	img = imread("images/bg.png", 0);
 
 	//making the buttons
 	btnRepeat = Rect(80, 410, 120, 70);
 	btnConfirm = Rect(340, 410, 120, 70);
 	btnBack = Rect(600, 410, 120, 70);
 
-	canvas = Mat3b(bg.rows + btnRepeat.height, bg.cols, Vec3b(0, 0, 0));
+	canvas = Mat3b(img.rows + btnRepeat.height, img.cols, Vec3b(0, 0, 0));
 	
 	namedWindow(winName);
 	setMouseCallback(winName, callBackFunc);
 
-	imshow(winName, bg);
+	imshow(winName, img);
 	waitKey(0);
 }
 
