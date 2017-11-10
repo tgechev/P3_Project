@@ -10,7 +10,7 @@ int main(int argc, TCHAR* argv[])
 
 	while (true) {
 		//printf("Test music for 20s : %f elapsed\n",player.GetPosition());
-		Sleep(1000);
+		Sleep(10);
 	}
 	//player.Close();
 

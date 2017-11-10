@@ -121,8 +121,10 @@
   <ItemGroup>
     <ClCompile Include="Levels.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Levels.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MP3Player.h" />

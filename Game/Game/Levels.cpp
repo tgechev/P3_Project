@@ -5,6 +5,7 @@
 #include <MMSystem.h>
 #include "MP3Player.h"
 #include "Main.h"
+#include "Sound.h"
 using namespace cv;
 using namespace std;
 
@@ -156,7 +157,7 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 	{
 		if (btnRepeat.contains(Point(x, y)))
 		{
-			//RepeatSong();
+			PlayChord(1);
 			cout << "Repeat!" << endl;
 		}
 		else if (btnConfirm.contains(Point(x, y)))
@@ -172,6 +173,8 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 	}
 
 }
+
+
 
 void mainMenu() {
 	Mat3b canvas;

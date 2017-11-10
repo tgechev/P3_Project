@@ -19,21 +19,9 @@ int getLvl() {
 void setLvl(int lvl) {
 
 	level = lvl;
-}
-void RepeatSong() {
-	MP3Player player;
-
-	player.OpenFromFile("Audio/test.mp3");
-
-	player.Play();
-
-	//while (true) {
-		//printf("Test music for 20s : %f elapsed\n",player.GetPosition());
-		//Sleep(1000);
-	//}
-	//player.Close();
-
 }
+
+
 
 
 int main()
