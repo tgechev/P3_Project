@@ -4,7 +4,7 @@ int main(int argc, TCHAR* argv[])
 {
 	MP3Player player;
 
-	player.OpenFromFile(L"your path to an mp3 file here");
+	player.OpenFromFile(L"test4.mp3");
 
 	player.Play();
 

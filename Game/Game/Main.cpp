@@ -1,13 +1,14 @@
 #include <opencv2\opencv.hpp>
 #include <iostream>
 #include <windows.h>
+#include <MMSystem.h>
+#include "MP3Player.h"
+
 using namespace cv;
 using namespace std;
 
-//Comment for Marlene to test! FUCK GITKRAKEN >:(
-
 //Global
-int level = 2;
+int level = 0;
 
 //Level
 string winName = "EXCITING GAME";
@@ -60,6 +61,21 @@ void checkLevel() {
 	}
 	waitKey(0);
 	
+}
+
+void RepeatSong() {
+	MP3Player player;
+
+	player.OpenFromFile("Audio/test.mp3");
+
+	player.Play();
+
+	//while (true) {
+		//printf("Test music for 20s : %f elapsed\n",player.GetPosition());
+		//Sleep(1000);
+	//}
+	//player.Close();
+
 }
 
 void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
@@ -165,6 +181,7 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 	{
 		if (btnRepeat.contains(Point(x, y)))
 		{
+			RepeatSong();
 			cout << "Repeat!" << endl;
 		}
 		else if (btnConfirm.contains(Point(x, y)))
