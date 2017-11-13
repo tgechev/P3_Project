@@ -2,8 +2,8 @@
 #include <opencv2\opencv.hpp>
 #include <iostream>
 #include <windows.h>
-#include <MMSystem.h>
-#include "MP3Player.h"
+//#include <MMSystem.h>
+//#include "MP3Player.h"
 #include "Main.h"
 #include "Sound.h"
 using namespace cv;
@@ -19,19 +19,10 @@ Rect btnLevel1;
 Rect btnLevel2;
 Rect btnLevel3;
 
-//Levels
 Rect btnRepeat;
 Rect btnConfirm;
-Rect playButton1;
-Rect playButton2;
-Rect playButton3;
-Rect playButton4;
-
-//Credits
 Rect btnBack;
 
-
-//Card checks
 vector<int> curCards = { 1,2,3,4 };
 vector<int> correctCards = { 1,5,3,4 };
 vector<int> cardResults = { 0,0,0,0 };
@@ -58,6 +49,19 @@ void loadLevel() {
 	playButton2 = Rect(374, 144, 70, 48);
 	playButton3 = Rect(577, 144, 70, 48);
 	playButton4 = Rect(785, 144, 70, 48);
+
+	//making the new buttons!
+	btnSnip1 = Rect(170, 147, 70, 45);
+	btnSnip2 = Rect(378, 147, 70, 45);
+	btnSnip3 = Rect(570, 147, 70, 45);
+	btnSnip4 = Rect(790, 147, 70, 45);
+
+	//Drawing new buttons
+	/*
+	img(btnSnip1) = Vec3b(200, 200, 200);
+	img(btnSnip2) = Vec3b(200, 200, 200);
+	img(btnSnip3) = Vec3b(200, 200, 200);
+	img(btnSnip4) = Vec3b(200, 200, 200);*/
 
 	canvas = Mat3b(img.rows + btnRepeat.height, img.cols, Vec3b(0, 0, 0));
 
@@ -99,7 +103,7 @@ void checkLevel(int lvl)
 		loadLevel();
 		break;
 	case 2:
-		cout << "You passed" << endl;
+		cout << "level 2" << endl;
 		break;
 	case 3:
 		cout << "Better try again" << endl;
@@ -206,24 +210,8 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 			cout << "Exit!" << endl;
 			destroyAllWindows();
 		}
-		else if (playButton1.contains(Point(x, y)))
-		{
-			cout << "Play 1" << endl;
-		}
-		else if (playButton2.contains(Point(x, y)))
-		{
-			cout << "Play 2" << endl;
-		}
-		else if (playButton3.contains(Point(x, y)))
-		{
-			cout << "Play 3" << endl;
-		}
-		else if (playButton4.contains(Point(x, y)))
-		{
-			cout << "Play 4" << endl;
-		}
 	}
-
+	
 }
 
 void callBackFuncCredits(int event, int x, int y, int flags, void* userdata)
@@ -271,3 +259,34 @@ void mainMenu() {
 	
 
 
+
+//Levels
+Rect playButton1;
+Rect playButton2;
+Rect playButton3;
+Rect playButton4;
+
+//Credits
+Rect btnBack;
+
+//Card checks
+		else if (playButton1.contains(Point(x, y)))
+		{
+		}
+		else if (playButton2.contains(Point(x, y)))
+		{
+			cout << "Play 2" << endl;
+		}
+		else if (playButton3.contains(Point(x, y)))
+		{
+			cout << "Play 3" << endl;
+		}
+		else if (playButton4.contains(Point(x, y)))
+		{
+			cout << "Play 4" << endl;
+		}
+			cout << "Play 1" << endl;
+			PlaySnippet(1);
+			PlaySnippet(2);
+			PlaySnippet(3);
+			PlaySnippet(4);

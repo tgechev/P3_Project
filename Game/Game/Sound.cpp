@@ -2,27 +2,31 @@
 #include <opencv2\opencv.hpp>
 #include <iostream>
 #include <windows.h>
-#include <MMSystem.h>
-#include "MP3Player.h"
+//#include <MMSystem.h>
+//#include <mciapi.h>
 #include "Main.h"
-#include <string>
+#include <SFML/Audio.hpp>
+#include<SFML/System.hpp>
 
-//typedef std::basic_string<TCHAR> tstring;
 using namespace cv;
 using namespace std;
 
+sf::Music music;
+
+
 void RepeatSong() {
-	MP3Player player;
+	/*
+	//MP3Player player;
 
 	player.OpenFromFile("Audio/HitTheRoadJack/JackSong.mp3");
 
 	player.Play();
-
+	*/
 }
 
 void PlayChord(int chord) {
-
-	MP3Player player;
+	/*
+	//MP3Player player;
 	
 	//const char test[] = { "Audio/HitTheRoadJack/1.mp3" };
 	//player.OpenFromFile(test);
@@ -58,33 +62,38 @@ void PlayChord(int chord) {
 	}
 
 	player.Play();
-
+	*/
 }
 
+
 void PlaySnippet(int snipNum) {
-
-	MP3Player player;
-
+	
 	switch (snipNum)
 	{
 	case 1:
-		player.OpenFromFile("Audio/HitTheRoadJack/SnipJack1.mp3");
+
+		music.openFromFile("Audio/Jack/SnippetsJack1.ogg");
+		cout << "snip1" << endl;
+		music.play();
 		break;
 	case 2:
-		player.OpenFromFile("Audio/HitTheRoadJack/SnipJack2.mp3");
+		music.openFromFile("Audio/Jack/SnippetsJack2.ogg");
+		cout << "lol 2" << endl;
+		music.play();
 		break;
 	case 3:
-		player.OpenFromFile("Audio/HitTheRoadJack/SnipJack3.mp3");
+		music.openFromFile("Audio/Jack/SnippetsJack3.ogg");
+		cout << "lol 3" << endl;
+		music.play();
 		break;
 	case 4:
-		player.OpenFromFile("Audio/HitTheRoadJack/SnipJack4.mp3");
+		music.openFromFile("Audio/Jack/SnippetsJack4.ogg");
+		cout << "lol 4" << endl;
+		music.play();
 		break;
 	default:
-		player.OpenFromFile("Audio/error.mp3");
+		cout << "error" << endl;
 		break;
 	}
-
-	player.Play();
-
-
+	
 }
