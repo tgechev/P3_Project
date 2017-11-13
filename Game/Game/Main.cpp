@@ -10,7 +10,7 @@ using namespace cv;
 using namespace std;
 
 //Global
-int level = 1;
+int level = 0;
 
 
 int getLvl() {

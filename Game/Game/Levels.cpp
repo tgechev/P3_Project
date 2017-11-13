@@ -2,8 +2,6 @@
 #include <opencv2\opencv.hpp>
 #include <iostream>
 #include <windows.h>
-//#include <MMSystem.h>
-//#include "MP3Player.h"
 #include "Main.h"
 #include "Sound.h"
 using namespace cv;
@@ -195,7 +193,7 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 	{
 		if (btnRepeat.contains(Point(x, y)))
 		{
-			PlayChord(1);
+			RepeatSong();
 			cout << "Repeat!" << endl;
 		}
 		else if (btnConfirm.contains(Point(x, y)))
