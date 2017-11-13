@@ -12,7 +12,7 @@ Rect btnExit;
 
 //mainMenu
 Rect btnTutorial;
-Rect btnOptions;
+Rect btnCredits;
 Rect btnLevel1;
 Rect btnLevel2;
 Rect btnLevel3;
@@ -96,16 +96,23 @@ void checkLevel(int lvl)
 		mainMenu();
 		break;
 	case 1:
-		cout << "omggg level 1" << endl;
+		cout << "Tutorial level!" << endl;
 		loadLevel();
 		break;
 	case 2:
-		cout << "level 2" << endl;
+		cout << "level 1" << endl;
+		loadLevel();
 		break;
 	case 3:
-		cout << "Better try again" << endl;
+		cout << "Level 2" << endl;
+		loadLevel();
 		break;
 	case 4:
+		cout << "Level 3" << endl;
+		loadLevel();
+		break;
+	case 5:
+		cout << "Credits" << endl;
 		loadCredits();
 		break;
 	default:
@@ -127,33 +134,33 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 		else if (btnTutorial.contains(Point(x, y)))
 		{
 			cout << "Tutorial" << endl;
+			setLvl(1);
 		}
-		else if (btnOptions.contains(Point(x, y)))
+		else if (btnCredits.contains(Point(x, y)))
 		{
 			cout << "Credits" << endl;
-			setLvl(4);
-			checkLevel(getLvl());
+			setLvl(5);
 		}
 		else if (btnLevel1.contains(Point(x, y)))
 		{
 			cout << "Level 1" << endl;
-			setLvl(1);
-			checkLevel(getLvl());
+			setLvl(2);
 		}
 		else if (btnLevel2.contains(Point(x, y)))
 		{
 			cout << "Level 2" << endl;
-
+			setLvl(3);
 		}
 		else if (btnLevel3.contains(Point(x, y)))
 		{
 			cout << "Level 3" << endl;
+			setLvl(4);
 		}
+
+		checkLevel(getLvl());
 
 	}
 
-	//imshow(winName, img);
-	//waitKey(1);
 }
 
 void Confirm(vector<int> vectInput, int level) {
@@ -254,13 +261,11 @@ void callBackFuncCredits(int event, int x, int y, int flags, void* userdata)
 
 void mainMenu() {
 	Mat3b canvas;
-	//string winName = "MAIN MENU";
-	//Mat img;
 
 	img = imread("images/bg_menu.jpg", CV_LOAD_IMAGE_COLOR);
 	//making the buttons
 	btnTutorial = Rect(59, 240, 215, 60);
-	btnOptions = Rect(59, 348, 215, 60);
+	btnCredits = Rect(59, 348, 215, 60);
 	btnExit = Rect(59, 462, 215, 60);
 	btnLevel1 = Rect(752, 240, 215, 60);
 	btnLevel2 = Rect(752, 349, 215, 60);
@@ -273,9 +278,7 @@ void mainMenu() {
 	setMouseCallback(winName, callBackFuncMenu);
 
 	imshow(winName, img);
-
-	// Wait until user press some key
-
+	
 }
 
 
