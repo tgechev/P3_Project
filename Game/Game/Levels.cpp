@@ -53,7 +53,7 @@ void loadLevel() {
 	//making the buttons
 	btnRepeat = Rect(190, 457, 114, 62);
 	btnConfirm = Rect(454, 457, 114, 62);
-	btnExit = Rect(718, 457, 114, 62);
+	btnBack = Rect(718, 457, 114, 62);
 	playButton1 = Rect(168, 144, 70, 48);
 	playButton2 = Rect(374, 144, 70, 48);
 	playButton3 = Rect(577, 144, 70, 48);
@@ -217,10 +217,11 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 
 			
 		}
-		else if (btnExit.contains(Point(x, y)))
+		else if (btnBack.contains(Point(x, y)))
 		{
-			cout << "Exit!" << endl;
-			destroyAllWindows();
+			cout << "Back!" << endl;
+			setLvl(0);
+			checkLevel(getLvl());
 		}
 		else if (playButton1.contains(Point(x, y)))
 		{
