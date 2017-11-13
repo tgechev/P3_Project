@@ -9,18 +9,29 @@
 using namespace cv;
 using namespace std;
 
+//Global-ish
+Rect btnExit;
+
 //mainMenu
 Rect btnTutorial;
 Rect btnOptions;
-Rect btnExit;
 Rect btnLevel1;
 Rect btnLevel2;
 Rect btnLevel3;
 
+//Levels
 Rect btnRepeat;
 Rect btnConfirm;
+Rect playButton1;
+Rect playButton2;
+Rect playButton3;
+Rect playButton4;
+
+//Credits
 Rect btnBack;
 
+
+//Card checks
 vector<int> curCards = { 1,2,3,4 };
 vector<int> correctCards = { 1,5,3,4 };
 vector<int> cardResults = { 0,0,0,0 };
@@ -29,7 +40,7 @@ Mat img;
 Mat correct = imread("images/correct.png", CV_LOAD_IMAGE_COLOR);
 Mat wrong = imread("images/wrong.png", CV_LOAD_IMAGE_COLOR);
 
-
+//Window name
 string winName = "EXCITING GAME";
 
 
@@ -40,9 +51,13 @@ void loadLevel() {
 	img = imread("images/bg.png", CV_LOAD_IMAGE_COLOR);
 
 	//making the buttons
-	btnRepeat = Rect(80, 410, 120, 70);
-	btnConfirm = Rect(340, 410, 120, 70);
-	btnBack = Rect(600, 410, 120, 70);
+	btnRepeat = Rect(190, 457, 114, 62);
+	btnConfirm = Rect(454, 457, 114, 62);
+	btnExit = Rect(718, 457, 114, 62);
+	playButton1 = Rect(168, 144, 70, 48);
+	playButton2 = Rect(374, 144, 70, 48);
+	playButton3 = Rect(577, 144, 70, 48);
+	playButton4 = Rect(785, 144, 70, 48);
 
 	canvas = Mat3b(img.rows + btnRepeat.height, img.cols, Vec3b(0, 0, 0));
 
@@ -52,6 +67,25 @@ void loadLevel() {
 	imshow(winName, img);
 	waitKey(0);
 }
+
+void loadCredits() {
+
+	Mat3b canvas;
+
+	img = imread("images/bg_credits.jpg", CV_LOAD_IMAGE_COLOR);
+
+	//making the buttons
+	btnBack = Rect(751, 649, 215, 60);
+
+	canvas = Mat3b(img.rows + btnRepeat.height, img.cols, Vec3b(0, 0, 0));
+
+	namedWindow(winName);
+	setMouseCallback(winName, callBackFuncCredits);
+
+	imshow(winName, img);
+	waitKey(0);
+}
+
 
 
 void checkLevel(int lvl)
@@ -71,7 +105,7 @@ void checkLevel(int lvl)
 		cout << "Better try again" << endl;
 		break;
 	case 4:
-		cout << "Better try again" << endl;
+		loadCredits();
 		break;
 	default:
 		cout << "Invalid level" << endl;
@@ -95,7 +129,9 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 		}
 		else if (btnOptions.contains(Point(x, y)))
 		{
-			cout << "Options" << endl;
+			cout << "Credits" << endl;
+			setLvl(4);
+			checkLevel(getLvl());
 		}
 		else if (btnLevel1.contains(Point(x, y)))
 		{
@@ -165,16 +201,43 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 			Confirm(curCards, getLvl());
 			cout << "Checked and confirmed!" << endl;
 		}
-		else if (btnBack.contains(Point(x, y)))
+		else if (btnExit.contains(Point(x, y)))
 		{
 			cout << "Exit!" << endl;
 			destroyAllWindows();
+		}
+		else if (playButton1.contains(Point(x, y)))
+		{
+			cout << "Play 1" << endl;
+		}
+		else if (playButton2.contains(Point(x, y)))
+		{
+			cout << "Play 2" << endl;
+		}
+		else if (playButton3.contains(Point(x, y)))
+		{
+			cout << "Play 3" << endl;
+		}
+		else if (playButton4.contains(Point(x, y)))
+		{
+			cout << "Play 4" << endl;
 		}
 	}
 
 }
 
-
+void callBackFuncCredits(int event, int x, int y, int flags, void* userdata)
+{
+	if (event == EVENT_LBUTTONDOWN)
+	{
+		if (btnBack.contains(Point(x, y)))
+		{
+			cout << "Back!" << endl;
+			setLvl(0);
+			checkLevel(getLvl());
+		}
+	}
+}
 
 void mainMenu() {
 	Mat3b canvas;
@@ -183,12 +246,12 @@ void mainMenu() {
 
 	img = imread("images/bg_menu.jpg", CV_LOAD_IMAGE_COLOR);
 	//making the buttons
-	btnTutorial = Rect(54, 192, 169, 47);
-	btnOptions = Rect(54, 277, 169, 47);
-	btnExit = Rect(54, 366, 169, 47);
-	btnLevel1 = Rect(598, 192, 169, 47);
-	btnLevel2 = Rect(598, 277, 169, 47);
-	btnLevel3 = Rect(598, 366, 169, 47);
+	btnTutorial = Rect(59, 240, 215, 60);
+	btnOptions = Rect(59, 348, 215, 60);
+	btnExit = Rect(59, 462, 215, 60);
+	btnLevel1 = Rect(752, 240, 215, 60);
+	btnLevel2 = Rect(752, 349, 215, 60);
+	btnLevel3 = Rect(752, 462, 215, 60);
 
 	// The canvas
 	canvas = Mat3b(img.rows, img.cols, Vec3b(0, 0, 0));
