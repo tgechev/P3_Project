@@ -27,9 +27,6 @@ Rect playButton2;
 Rect playButton3;
 Rect playButton4;
 
-//Credits
-//Rect btnBack;
-
 
 vector<int> curCards = { 1,2,3,4 };
 vector<int> correctCards = { 1,5,3,4 };
@@ -66,7 +63,7 @@ void loadLevel() {
 	setMouseCallback(winName, callBackFunc);
 
 	imshow(winName, img);
-	waitKey(0);
+	//waitKey(0);
 }
 
 void loadCredits() {
@@ -84,7 +81,6 @@ void loadCredits() {
 	setMouseCallback(winName, callBackFuncCredits);
 
 	imshow(winName, img);
-	waitKey(0);
 }
 
 
@@ -118,7 +114,6 @@ void checkLevel(int lvl)
 	default:
 		cout << "Invalid level" << endl;
 	}
-	waitKey(0);
 
 }
 
@@ -180,8 +175,6 @@ void Confirm(vector<int> vectInput, int level) {
 	}
 	//printing the results
 
-
-
 	for (int i = 0; i<cardResults.size(); ++i) {
 		cout << "The results are: " << cardResults[i] << endl;
 		if (cardResults[i] == 1) {
@@ -215,7 +208,6 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 		{
 			Confirm(curCards, getLvl());
 
-			
 		}
 		else if (btnBack.contains(Point(x, y)))
 		{
@@ -279,7 +271,7 @@ void mainMenu() {
 	setMouseCallback(winName, callBackFuncMenu);
 
 	imshow(winName, img);
-	
+	waitKey(0);
 }
 
 

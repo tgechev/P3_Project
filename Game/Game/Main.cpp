@@ -22,9 +22,6 @@ void setLvl(int lvl) {
 	level = lvl;
 }
 
-
-
-
 int main()
 {
 	checkLevel(getLvl());
