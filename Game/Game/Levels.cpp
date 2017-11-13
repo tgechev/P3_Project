@@ -19,6 +19,7 @@ Rect btnLevel1;
 Rect btnLevel2;
 Rect btnLevel3;
 
+//level
 Rect btnRepeat;
 Rect btnConfirm;
 Rect btnBack;
