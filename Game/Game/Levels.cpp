@@ -36,6 +36,7 @@ vector<int> correctCards = { 1,5,3,4 };
 vector<int> cardResults = { 0,0,0,0 };
 
 Mat img;
+Mat test;
 Mat correct = imread("images/correct.png", CV_LOAD_IMAGE_COLOR);
 Mat wrong = imread("images/wrong.png", CV_LOAD_IMAGE_COLOR);
 
@@ -48,7 +49,7 @@ void loadLevel() {
 	Mat3b canvas;
 
 	img = imread("images/bg.png", CV_LOAD_IMAGE_COLOR);
-
+	test = imread("images/bg1.png", CV_LOAD_IMAGE_COLOR);
 	//making the buttons
 	btnRepeat = Rect(190, 457, 114, 62);
 	btnConfirm = Rect(454, 457, 114, 62);
@@ -172,19 +173,26 @@ void Confirm(vector<int> vectInput, int level) {
 	}
 	//printing the results
 
+
+
 	for (int i = 0; i<cardResults.size(); ++i) {
 		cout << "The results are: " << cardResults[i] << endl;
 		if (cardResults[i] == 1) {
-			correct.copyTo(img(Rect(100 + (160 * i), 100, correct.cols, correct.rows)));
+			correct.copyTo(img(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
+
 		}
 		else {
-			wrong.copyTo(img(Rect(100 + (160 * i), 100, wrong.cols, wrong.rows)));
+			wrong.copyTo(img(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
 
 		}
 
 	}
 
 	imshow(winName, img);
+	cout << "Checked and confirmed!" << endl;
+	waitKey(2000);
+	imshow(winName, test);
+
 }
 
 void callBackFunc(int event, int x, int y, int flags, void* userdata)
@@ -199,7 +207,8 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 		else if (btnConfirm.contains(Point(x, y)))
 		{
 			Confirm(curCards, getLvl());
-			cout << "Checked and confirmed!" << endl;
+
+			
 		}
 		else if (btnExit.contains(Point(x, y)))
 		{
