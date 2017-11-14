@@ -4,8 +4,12 @@
 #include <windows.h>
 #include "Main.h"
 #include "Sound.h"
+#include <chrono>
+#include <thread>
+#include <functional>
 using namespace cv;
 using namespace std;
+using namespace std::chrono_literals;
 
 //Global-ish
 Rect btnExit;
@@ -27,6 +31,11 @@ Rect playButton2;
 Rect playButton3;
 Rect playButton4;
 
+//timeline blocks
+Rect timeline1;
+Rect timeline2;
+Rect timeline3;
+Rect timeline4;
 
 vector<int> curCards = { 1,2,3,4 };
 vector<int> correctCards = { 1,5,3,4 };
@@ -202,6 +211,9 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 		if (btnRepeat.contains(Point(x, y)))
 		{
 			RepeatSong();
+			//place function here
+
+			timelineLevel();
 			cout << "Repeat!" << endl;
 		}
 		else if (btnConfirm.contains(Point(x, y)))
@@ -218,6 +230,9 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 		else if (playButton1.contains(Point(x, y)))
 		{
 			PlaySnippet(1);
+
+			//only one rect
+			//use int
 		}
 		else if (playButton2.contains(Point(x, y)))
 		{
@@ -274,6 +289,56 @@ void mainMenu() {
 	waitKey(0);
 }
 
+void timelineLevel() {
+
+	//making the timeline rectangles
+
+	timeline1 = Rect(106, 113, 203, 31);
+	timeline2 = Rect(309, 113, 203, 31);
+	timeline3 = Rect(512, 113, 203, 31);
+	timeline4 = Rect(715, 113, 202, 31);
+
+	int i = 0;
+
+	while (true) {
+
+		//cout << i;
+		img(timeline1) = Vec3b(250, 0, 200);
+		imshow(winName, img);
+
+		if (waitKey(30) >= 0)
+			break;
+
+		if (i <= 4) {
+
+			cout << i;
+			
+			//if (i == 0) {
+				//img(timeline1) = Vec3b(250, 0, 200);
+				//rectangle(img, timeline1, Scalar(250, 0, 200), -1);
+			//}
+			if (i == 0) {
+				img(timeline2) = Vec3b(250, 0, 200);
+			}
+			else if (i == 1) {
+				img(timeline3) = Vec3b(250, 0, 200);
+			}
+			//else if (i == 10) {
+			//img(timeline4) = Vec3b(250, 0, 200);
+			//}
+
+			else if (i == 8) {
+				img(timeline1) = Vec3b(200, 200, 200);
+				img(timeline2) = Vec3b(200, 200, 200);
+				img(timeline3) = Vec3b(200, 200, 200);
+			}
+
+			this_thread::sleep_for(1s);
+			i = i + 1;
+		}
+
+	}
+}
 
 
 

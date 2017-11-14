@@ -18,7 +18,8 @@ Rect btnRepeat;
 Rect btnConfirm;
 Rect btnExit;
 
-Rect timeline1;
+Rect timeline1
+
 Rect timeline2;
 Rect timeline3;
 Rect timeline4;
@@ -78,7 +79,7 @@ int main()
 
 		//cout << i;
 
-		imshow(winName, img);
+		//imshow(winName, img);
 
 		if (waitKey(30) >= 0)
 			break;
