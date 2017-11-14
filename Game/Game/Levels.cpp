@@ -123,7 +123,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 	{
 		if (btnExit.contains(Point(x, y)))
 		{
-			cout << "Exitiiiitt" << endl;
+			cout << "Exit12" << endl;
 			destroyAllWindows();
 		}
 		else if (btnTutorial.contains(Point(x, y)))
