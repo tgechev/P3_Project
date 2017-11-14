@@ -11,6 +11,7 @@ using namespace cv;
 using namespace std;
 using namespace std::chrono_literals;
 
+
 //Global-ish
 Rect btnExit;
 
@@ -38,8 +39,9 @@ Rect timeline3;
 Rect timeline4;
 
 vector<int> curCards = { 1,2,3,4 };
-vector<int> correctCards = { 1,5,3,4 };
+vector<int> correctCards = { 1,2,5,4 };
 vector<int> cardResults = { 0,0,0,0 };
+vector<int> cardResultsPositive = { 1,1,1,1 };
 
 Mat img;
 Mat test;
@@ -132,7 +134,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 	{
 		if (btnExit.contains(Point(x, y)))
 		{
-			cout << "Exitiiiitt" << endl;
+			cout << "Exit12" << endl;
 			destroyAllWindows();
 		}
 		else if (btnTutorial.contains(Point(x, y)))
@@ -183,7 +185,14 @@ void Confirm(vector<int> vectInput, int level) {
 		}
 	}
 	//printing the results
-
+	if (cardResults == cardResultsPositive) {
+		cout << "The results are correct" << endl;
+		CorrectCards();
+	}
+	else {
+		cout << "The results are NOT correct" << endl;
+		InCorrectCards();
+	}
 	for (int i = 0; i<cardResults.size(); ++i) {
 		cout << "The results are: " << cardResults[i] << endl;
 		if (cardResults[i] == 1) {
@@ -195,7 +204,8 @@ void Confirm(vector<int> vectInput, int level) {
 
 		}
 
-	}
+	
+}
 
 	imshow(winName, img);
 	cout << "Checked and confirmed!" << endl;

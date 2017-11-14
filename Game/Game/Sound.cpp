@@ -31,3 +31,13 @@ void PlaySnippet(int snipNum) {
 	music.play();
 	
 }
+
+void CorrectCards() {
+	music.openFromFile("Audio/correctcards.ogg");
+	music.play();
+}
+
+void InCorrectCards() {
+	music.openFromFile("Audio/incorrectcards.ogg");
+	music.play();
+}

@@ -10,5 +10,7 @@ using namespace std;
 void RepeatSong();
 void PlayChord(int chord);
 void PlaySnippet(int snipNum);
+void CorrectCards();
+void InCorrectCards();
 
 #endif
