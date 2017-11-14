@@ -58,6 +58,7 @@ int main()
 	btnConfirm = Rect(340, 410, 120, 70);
 	btnExit = Rect(600, 410, 120, 70);
 
+	//making the timeline rectangles
 	timeline1 = Rect(106, 113, 203, 31);
 	timeline2 = Rect(309, 113, 203, 31);
 	timeline3 = Rect(512, 113, 203, 31);
@@ -67,14 +68,11 @@ int main()
 	// The canvas
 	canvas = Mat3b(img.rows + timeline1.height, img.cols, Vec3b(0, 0, 0));
 
-	
-
-
 	namedWindow(winName);
 	setMouseCallback(winName, callBackFunc);
 
 
-	int i = 1;
+	int i = 0;
 
 	while (true) {
 
@@ -90,19 +88,19 @@ int main()
 			//this_thread::sleep_for(1s);
 			position = Point(i, 10);
 			cout << i;
-			if (i == 2) {
+			if (i == 0) {
 				//img(timeline1) = Vec3b(200, 0, 0);
 				rectangle(img, timeline1, Scalar(250, 0, 200), -1);
 			}
-			else if (i == 3) {
+			else if (i == 2) {
 				img(timeline2) = Vec3b(250, 0, 200);
 			}
 			else if (i == 4) {
 				img(timeline3) = Vec3b(250, 0, 200);
 			}
-			else if (i == 5) {
-				img(timeline4) = Vec3b(250, 0, 200);
-			}
+			//else if (i == 10) {
+				//img(timeline4) = Vec3b(250, 0, 200);
+			//}
 
 			this_thread::sleep_for(1s);
 			i = i + 1;
