@@ -29,9 +29,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MP3Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Levels.h">
       <Filter>Header Files</Filter>
     </ClInclude>

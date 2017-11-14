@@ -2,8 +2,6 @@
 #include <opencv2\opencv.hpp>
 #include <iostream>
 #include <windows.h>
-#include <MMSystem.h>
-#include "MP3Player.h"
 #include "Main.h"
 #include "Sound.h"
 using namespace cv;
@@ -14,29 +12,28 @@ Rect btnExit;
 
 //mainMenu
 Rect btnTutorial;
-Rect btnOptions;
+Rect btnCredits;
 Rect btnLevel1;
 Rect btnLevel2;
 Rect btnLevel3;
 
-//Levels
+//level
 Rect btnRepeat;
 Rect btnConfirm;
+Rect btnBack;
+//Levels
 Rect playButton1;
 Rect playButton2;
 Rect playButton3;
 Rect playButton4;
 
-//Credits
-Rect btnBack;
 
-
-//Card checks
 vector<int> curCards = { 1,2,3,4 };
 vector<int> correctCards = { 1,5,3,4 };
 vector<int> cardResults = { 0,0,0,0 };
 
 Mat img;
+Mat test;
 Mat correct = imread("images/correct.png", CV_LOAD_IMAGE_COLOR);
 Mat wrong = imread("images/wrong.png", CV_LOAD_IMAGE_COLOR);
 
@@ -49,15 +46,16 @@ void loadLevel() {
 	Mat3b canvas;
 
 	img = imread("images/bg.png", CV_LOAD_IMAGE_COLOR);
-
+	test = imread("images/bg1.png", CV_LOAD_IMAGE_COLOR);
 	//making the buttons
 	btnRepeat = Rect(190, 457, 114, 62);
 	btnConfirm = Rect(454, 457, 114, 62);
-	btnExit = Rect(718, 457, 114, 62);
+	btnBack = Rect(718, 457, 114, 62);
 	playButton1 = Rect(168, 144, 70, 48);
 	playButton2 = Rect(374, 144, 70, 48);
 	playButton3 = Rect(577, 144, 70, 48);
 	playButton4 = Rect(785, 144, 70, 48);
+
 
 	canvas = Mat3b(img.rows + btnRepeat.height, img.cols, Vec3b(0, 0, 0));
 
@@ -65,7 +63,7 @@ void loadLevel() {
 	setMouseCallback(winName, callBackFunc);
 
 	imshow(winName, img);
-	waitKey(0);
+	//waitKey(0);
 }
 
 void loadCredits() {
@@ -83,7 +81,6 @@ void loadCredits() {
 	setMouseCallback(winName, callBackFuncCredits);
 
 	imshow(winName, img);
-	waitKey(0);
 }
 
 
@@ -95,22 +92,28 @@ void checkLevel(int lvl)
 		mainMenu();
 		break;
 	case 1:
-		cout << "omggg level 1" << endl;
+		cout << "Tutorial level!" << endl;
 		loadLevel();
 		break;
 	case 2:
-		cout << "You passed" << endl;
+		cout << "level 1" << endl;
+		loadLevel();
 		break;
 	case 3:
-		cout << "Better try again" << endl;
+		cout << "Level 2" << endl;
+		loadLevel();
 		break;
 	case 4:
+		cout << "Level 3" << endl;
+		loadLevel();
+		break;
+	case 5:
+		cout << "Credits" << endl;
 		loadCredits();
 		break;
 	default:
 		cout << "Invalid level" << endl;
 	}
-	waitKey(0);
 
 }
 
@@ -126,33 +129,33 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 		else if (btnTutorial.contains(Point(x, y)))
 		{
 			cout << "Tutorial" << endl;
+			setLvl(1);
 		}
-		else if (btnOptions.contains(Point(x, y)))
+		else if (btnCredits.contains(Point(x, y)))
 		{
 			cout << "Credits" << endl;
-			setLvl(4);
-			checkLevel(getLvl());
+			setLvl(5);
 		}
 		else if (btnLevel1.contains(Point(x, y)))
 		{
 			cout << "Level 1" << endl;
-			setLvl(1);
-			checkLevel(getLvl());
+			setLvl(2);
 		}
 		else if (btnLevel2.contains(Point(x, y)))
 		{
 			cout << "Level 2" << endl;
-
+			setLvl(3);
 		}
 		else if (btnLevel3.contains(Point(x, y)))
 		{
 			cout << "Level 3" << endl;
+			setLvl(4);
 		}
+
+		checkLevel(getLvl());
 
 	}
 
-	//imshow(winName, img);
-	//waitKey(1);
 }
 
 void Confirm(vector<int> vectInput, int level) {
@@ -175,16 +178,21 @@ void Confirm(vector<int> vectInput, int level) {
 	for (int i = 0; i<cardResults.size(); ++i) {
 		cout << "The results are: " << cardResults[i] << endl;
 		if (cardResults[i] == 1) {
-			correct.copyTo(img(Rect(100 + (160 * i), 100, correct.cols, correct.rows)));
+			correct.copyTo(img(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
+
 		}
 		else {
-			wrong.copyTo(img(Rect(100 + (160 * i), 100, wrong.cols, wrong.rows)));
+			wrong.copyTo(img(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
 
 		}
 
 	}
 
 	imshow(winName, img);
+	cout << "Checked and confirmed!" << endl;
+	waitKey(2000);
+	imshow(winName, test);
+
 }
 
 void callBackFunc(int event, int x, int y, int flags, void* userdata)
@@ -193,37 +201,42 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 	{
 		if (btnRepeat.contains(Point(x, y)))
 		{
-			PlayChord(1);
+			RepeatSong();
 			cout << "Repeat!" << endl;
 		}
 		else if (btnConfirm.contains(Point(x, y)))
 		{
 			Confirm(curCards, getLvl());
-			cout << "Checked and confirmed!" << endl;
+
 		}
-		else if (btnExit.contains(Point(x, y)))
+		else if (btnBack.contains(Point(x, y)))
 		{
-			cout << "Exit!" << endl;
-			destroyAllWindows();
+			cout << "Back!" << endl;
+			setLvl(0);
+			checkLevel(getLvl());
 		}
 		else if (playButton1.contains(Point(x, y)))
 		{
-			cout << "Play 1" << endl;
+			PlaySnippet(1);
 		}
 		else if (playButton2.contains(Point(x, y)))
 		{
 			cout << "Play 2" << endl;
+			PlaySnippet(2);
 		}
 		else if (playButton3.contains(Point(x, y)))
 		{
+			PlaySnippet(3);
 			cout << "Play 3" << endl;
 		}
 		else if (playButton4.contains(Point(x, y)))
 		{
 			cout << "Play 4" << endl;
+			PlaySnippet(4);
 		}
-	}
 
+	}
+	
 }
 
 void callBackFuncCredits(int event, int x, int y, int flags, void* userdata)
@@ -241,13 +254,11 @@ void callBackFuncCredits(int event, int x, int y, int flags, void* userdata)
 
 void mainMenu() {
 	Mat3b canvas;
-	//string winName = "MAIN MENU";
-	//Mat img;
 
 	img = imread("images/bg_menu.jpg", CV_LOAD_IMAGE_COLOR);
 	//making the buttons
 	btnTutorial = Rect(59, 240, 215, 60);
-	btnOptions = Rect(59, 348, 215, 60);
+	btnCredits = Rect(59, 348, 215, 60);
 	btnExit = Rect(59, 462, 215, 60);
 	btnLevel1 = Rect(752, 240, 215, 60);
 	btnLevel2 = Rect(752, 349, 215, 60);
@@ -260,10 +271,9 @@ void mainMenu() {
 	setMouseCallback(winName, callBackFuncMenu);
 
 	imshow(winName, img);
-
-	// Wait until user press some key
-
+	waitKey(0);
 }
+
 
 
 
@@ -271,3 +281,10 @@ void mainMenu() {
 	
 
 
+
+
+
+			
+			
+		
+			

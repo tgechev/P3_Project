@@ -7,9 +7,8 @@
 using namespace cv;
 using namespace std;
 
-
 void RepeatSong();
 void PlayChord(int chord);
-
+void PlaySnippet(int snipNum);
 
 #endif
