@@ -3,7 +3,7 @@
 #include <iostream>
 #include <windows.h>
 #include "Main.h"
-#include "Sound.h"
+#include "Sounds.h"
 #include <chrono>
 #include <thread>
 #include <functional>
@@ -37,14 +37,14 @@ Rect timeline1;
 Rect timeline2;
 Rect timeline3;
 Rect timeline4;
+bool timeline;
 
 vector<int> curCards = { 1,2,3,4 };
-vector<int> correctCards = { 1,2,5,4 };
+vector<int> correctCards = { 1,2,3,4 };
 vector<int> cardResults = { 0,0,0,0 };
 vector<int> cardResultsPositive = { 1,1,1,1 };
 
 Mat img;
-Mat test;
 Mat correct = imread("images/correct.png", CV_LOAD_IMAGE_COLOR);
 Mat wrong = imread("images/wrong.png", CV_LOAD_IMAGE_COLOR);
 
@@ -55,9 +55,11 @@ string winName = "EXCITING GAME";
 void loadLevel() {
 
 	Mat3b canvas;
+	Mat test;
 
 	img = imread("images/bg.png", CV_LOAD_IMAGE_COLOR);
-	test = imread("images/bg1.png", CV_LOAD_IMAGE_COLOR);
+	test = img.clone();
+
 	//making the buttons
 	btnRepeat = Rect(190, 457, 114, 62);
 	btnConfirm = Rect(454, 457, 114, 62);
@@ -170,8 +172,8 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 }
 
 void Confirm(vector<int> vectInput, int level) {
-
-
+	Mat test;
+	test = img.clone();
 	for (int i = 0; i < 4; i++) {
 		if (vectInput[i] == correctCards[i]) {
 			//cout << "Input card: " << vectInput[i] << ". Correct card: " << correctCards[i] << ". They are matching." << endl;
@@ -193,24 +195,24 @@ void Confirm(vector<int> vectInput, int level) {
 		cout << "The results are NOT correct" << endl;
 		InCorrectCards();
 	}
-	for (int i = 0; i<cardResults.size(); ++i) {
+	for (size_t i = 0; i<cardResults.size(); ++i) {
 		cout << "The results are: " << cardResults[i] << endl;
 		if (cardResults[i] == 1) {
-			correct.copyTo(img(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
+			correct.copyTo(test(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
 
 		}
 		else {
-			wrong.copyTo(img(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
+			wrong.copyTo(test(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
 
 		}
 
 	
 }
 
-	imshow(winName, img);
+	imshow(winName, test);
 	cout << "Checked and confirmed!" << endl;
 	waitKey(2000);
-	imshow(winName, test);
+	imshow(winName, img);
 
 }
 
@@ -220,10 +222,9 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 	{
 		if (btnRepeat.contains(Point(x, y)))
 		{
-			RepeatSong();
+			//RepeatSong();
 			//place function here
-
-			timelineLevel();
+			//timelineLevel();
 			cout << "Repeat!" << endl;
 		}
 		else if (btnConfirm.contains(Point(x, y)))
@@ -299,8 +300,9 @@ void mainMenu() {
 	waitKey(0);
 }
 
-void timelineLevel() {
-
+/*void timelineLevel() {
+	Mat test1;
+	test1 = img.clone();
 	//making the timeline rectangles
 
 	timeline1 = Rect(106, 113, 203, 31);
@@ -308,47 +310,67 @@ void timelineLevel() {
 	timeline3 = Rect(512, 113, 203, 31);
 	timeline4 = Rect(715, 113, 202, 31);
 
-	int i = 0;
+	//int i = 0;
+	int snippetcount = 0;
 
-	while (true) {
 
+	while (snippetcount <= 4) {
+		cout << "In WHILE" << endl;
+		//cout << music.getPlayingOffset().asSeconds() <<endl;
+
+		
 		//cout << i;
-		img(timeline1) = Vec3b(250, 0, 200);
-		imshow(winName, img);
+		test1(timeline1) = Vec3b(250, 0, 200);
+		imshow(winName, test1);
 
-		if (waitKey(30) >= 0)
-			break;
+		//teds if
+		//if(music.getPlayingOffset().asSeconds()==0)
+		//end teds if
+		//if (waitKey(5) >= 0)
+		//	break;
 
-		if (i <= 4) {
-
-			cout << i;
-			
+		    
 			//if (i == 0) {
 				//img(timeline1) = Vec3b(250, 0, 200);
 				//rectangle(img, timeline1, Scalar(250, 0, 200), -1);
 			//}
-			if (i == 0) {
-				img(timeline2) = Vec3b(250, 0, 200);
+
+			if (snippetcount == 0 && snippetp2.getStatus() == snippetp2.Stopped && snippetp3.getStatus() == snippetp3.Stopped) {
+				cout << "snip1" << endl;
+				test1(timeline2) = Vec3b(250, 0, 200);
+				RepeatSong1();
 			}
-			else if (i == 1) {
-				img(timeline3) = Vec3b(250, 0, 200);
+
+			if (snippetcount == 1 && snippetp1.getStatus() == snippetp1.Stopped && snippetp3.getStatus() == snippetp3.Stopped) {
+				cout << "snip2" << endl;
+				test1(timeline3) = Vec3b(250, 0, 200);
+				RepeatSong2();
+				
 			}
 			//else if (i == 10) {
 			//img(timeline4) = Vec3b(250, 0, 200);
 			//}
+			//snippetp3.getStatus() == snippetp3.Playing
 
-			else if (i == 8) {
-				img(timeline1) = Vec3b(200, 200, 200);
-				img(timeline2) = Vec3b(200, 200, 200);
-				img(timeline3) = Vec3b(200, 200, 200);
+			if (snippetcount == 2 && snippetp1.getStatus() == snippetp1.Stopped && snippetp2.getStatus() == snippetp2.Stopped) {
+				cout << "snip3" << endl;
+				test1(timeline1) = Vec3b(200, 200, 200);
+				test1(timeline2) = Vec3b(200, 200, 200);
+				test1(timeline3) = Vec3b(200, 200, 200);
+				RepeatSong3();
+			
 			}
-
+			cout << "Before sleep!" << endl;
 			this_thread::sleep_for(1s);
-			i = i + 1;
-		}
-
+			//i = i + 1;
+		
+	
+		cout << "Between" << endl;
+		snippetcount++;
 	}
-}
+	cout << "After sleep!" << endl;
+	
+}*/
 
 
 
