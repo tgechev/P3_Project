@@ -1,19 +1,13 @@
 #include "Levels.h"
-#include <opencv2\opencv.hpp>
-#include <iostream>
-//#include <windows.h>
-#include "Main.h"
 #include "Sounds.h"
 
 
-using namespace cv;
-using namespace std;
 sf::Music music;
-sf::Music snippetp1;
+
+/* sf::Music snippetp1;
 sf::Music snippetp2;
 sf::Music snippetp3;
 sf::Music snippetp4;
-
 
 void RepeatSong1() {
 
@@ -34,20 +28,21 @@ void RepeatSong3() {
 void RepeatSong4() {
 	snippetp4.openFromFile("Audio/" + to_string(getLvl()) + "/Snip4.ogg");
 	snippetp4.play();
+}*/
+
+void RepeatSong() {
+	music.openFromFile("Audio/" + to_string(getLvl()) + "/Song.ogg");
+	music.play();
 }
 
 void PlayChord(int chord) {
-
 	music.openFromFile("Audio/" + to_string(getLvl()) + "/" + to_string(chord) + ".ogg");
 	music.play();
-
 }
-
 
 void PlaySnippet(int snipNum) {
 	music.openFromFile("Audio/" + to_string(getLvl()) + "/Snip" + to_string(snipNum) + ".ogg");
 	music.play();
-	
 }
 
 void CorrectCards() {
