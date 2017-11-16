@@ -241,7 +241,8 @@ void mainMenu() {
 	btnLevel2 = Rect(752, 349, 215, 60);
 	btnLevel3 = Rect(752, 462, 215, 60);
 	
-	namedWindow(winName);
+	namedWindow(winName, CV_WINDOW_NORMAL);
+	setWindowProperty(winName, CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
 	setMouseCallback(winName, callBackFuncMenu);
 
 	imshow(winName, img);
