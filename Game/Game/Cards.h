@@ -1,11 +1,19 @@
-#ifndef GUI 
-#define GUI
+#ifndef Cards 
+#define Cards
 
-#include <opencv2\opencv.hpp> 
-#include <iostream> 
+#define _USE_MATH_DEFINES
+
+#include "Camera.h"
+#include <math.h>
+#include <iostream>
+#include <thread>
+
 using namespace cv;
 using namespace std;
 
+//vector<vector<Point> > foundBlobs;
 vector<int> getCurCards();
+
+void detectCards(Camera* myCamera, Rect cardROI);	
 
 #endif
