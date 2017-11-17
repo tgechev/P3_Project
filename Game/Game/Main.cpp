@@ -1,13 +1,9 @@
-#include <opencv2\opencv.hpp>
 #include <iostream>
-#include <windows.h>
-//#include <MMSystem.h>
+#include <opencv2\opencv.hpp> 
 #include "Levels.h"
 
-//#include <SFML/Audio.hpp>
-
-using namespace cv;
 using namespace std;
+using namespace cv;
 
 //Global
 int level = 0;
