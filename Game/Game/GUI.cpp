@@ -48,7 +48,7 @@ Mat wrong = imread("images/Wrong.png", IMREAD_COLOR);
 
 void settext(Mat img, int lvl) {
 	string text = "";
-void loadTutorial(int ntut) {
+
 
 	switch (lvl) {
 	case 0:
@@ -89,7 +89,7 @@ void loadTutorial(int ntut) {
 		Scalar::all(255), thickness, 8);
 }
 
-
+void loadTutorial(int ntut) {
 
 	Mat tutorial;
 
