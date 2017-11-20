@@ -8,9 +8,27 @@
 //using namespace cv;
 //using namespace std;
 
-vector<int> correctCards = { 1,7,4,0 };
 
-vector<int> getCorrectCards() {
+vector<int> getCorrectCards(int lvl) {
+	vector<int> correctCards;
+
+	switch (lvl)
+	{
+	case 1:
+		correctCards = { 1, 4, 5, 0 };
+		break;
+	case 2:
+		correctCards = { 1, 4, 7, 0 };
+		break;
+	case 3: 
+		correctCards = { 1, 3, 4, 5 };
+		break;
+	case 4: 
+		correctCards = { 1, 5, 6, 7 };
+		break;
+	default:
+		break;
+	}
 	return correctCards;
 }
 

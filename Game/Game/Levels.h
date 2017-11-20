@@ -11,7 +11,7 @@ void checkLevel(int lvl);
 int getLvl();
 void setLvl(int lvl);
 vector<int> getCurCards();
-vector<int> getCorrectCards();
+vector<int> getCorrectCards(int lvl);
 //add a getArtist, getSong, and getChordsStr, which is passed in strings and vectors.
 
 #endif

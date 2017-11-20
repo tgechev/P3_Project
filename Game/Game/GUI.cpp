@@ -128,7 +128,7 @@ void Confirm(vector<int> vectInput, int level) {
 	Mat test;
 	test = img.clone();
 	for (int i = 0; i < 4; i++) {
-		if (vectInput[i] == getCorrectCards()[i]) {
+		if (vectInput[i] == getCorrectCards(level)[i]) {
 			//cout << "Input card: " << vectInput[i] << ". Correct card: " << correctCards[i] << ". They are matching." << endl;
 			cardResults[i] = { 1 };
 
