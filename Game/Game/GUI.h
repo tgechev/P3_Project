@@ -15,5 +15,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata);
 void Confirm(vector<int> vectInput, int level);
 void callBackFunc(int event, int x, int y, int flags, void* userdata);
 void settext(Mat img, int lvl);
+void loadTutorial(int ntut);
+void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata);
 //Add settext for artist, song, chords(in the bottom) based on library in levels.
 #endif

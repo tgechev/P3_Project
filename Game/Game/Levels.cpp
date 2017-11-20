@@ -14,6 +14,28 @@ vector<int> getCorrectCards() {
 	return correctCards;
 }
 
+int level = 0;
+int tutlevel = 1;
+
+//LEVEL STUFF
+int getLvl() {
+	return level;
+}
+
+void setLvl(int lvl) {
+	level = lvl;
+}
+
+//TUTORIAL STUFF
+int getTut() {
+	return tutlevel;
+}
+
+void setTut(int tut) {
+
+	tutlevel = tut;
+}
+
 void checkLevel(int lvl)
 {
 	switch (lvl) {
@@ -22,7 +44,7 @@ void checkLevel(int lvl)
 		break;
 	case 1:
 		cout << "Tutorial level!" << endl;
-		loadLevel();
+		loadTutorial(getTut());
 		break;
 	case 2:
 		cout << "level 1" << endl;
@@ -45,6 +67,7 @@ void checkLevel(int lvl)
 	}
 
 }
+
 
 
 

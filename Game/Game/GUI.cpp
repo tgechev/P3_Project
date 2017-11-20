@@ -13,6 +13,9 @@ Rect btnLevel1;
 Rect btnLevel2;
 Rect btnLevel3;
 
+//Tutorial
+Rect btnNext;
+
 //level
 Rect btnRepeat;
 Rect btnConfirm;
@@ -85,6 +88,23 @@ void settext(Mat img, int lvl) {
 		Scalar::all(255), thickness, 8);
 }
 
+void loadTutorial(int ntut) {
+
+
+	Mat tutorial;
+
+	tutorial = imread("images/Tutorial" + to_string(ntut) +".jpg", CV_LOAD_IMAGE_COLOR);
+
+
+	//making the buttons
+	btnNext = Rect(731, 615, 220, 78);
+
+	namedWindow(winName);
+	setMouseCallback(winName, callBackFuncTutorial);
+
+	imshow(winName, tutorial);
+	//waitKey(0);
+}
 
 void loadLevel() {
 
@@ -229,6 +249,29 @@ void callBackFuncCredits(int event, int x, int y, int flags, void* userdata)
 		}
 	}
 }
+
+void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata)
+{
+	if (event == EVENT_LBUTTONDOWN)
+	{
+		if (btnNext.contains(Point(x, y)))
+		{
+			cout << "Next!" << endl;
+			if (getTut() <= 4) {
+				setTut(getTut() + 1);
+				loadTutorial(getTut());
+			}
+
+			else {
+				setTut(0);
+				cout << getTut() << endl;
+				//setLvl(2);
+				loadLevel();
+			}
+		}
+	}
+}
+
 
 void mainMenu() {
 
