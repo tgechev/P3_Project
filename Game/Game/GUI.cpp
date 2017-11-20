@@ -1,5 +1,5 @@
 #include "GUI.h"
-#include "Cards.h"
+//#include "Cards.h"
 #include "Levels.h"
 #include "Sounds.h"
 
@@ -43,11 +43,12 @@ vector<int> cardResultsPositive = { 1,1,1,1 };
 string winName = "EXCITING GAME";
 
 Mat img;
-Mat correct = imread("images/correct.png", CV_LOAD_IMAGE_COLOR);
-Mat wrong = imread("images/wrong.png", CV_LOAD_IMAGE_COLOR);
+Mat correct = imread("images/Correct.png", IMREAD_COLOR);
+Mat wrong = imread("images/Wrong.png", IMREAD_COLOR);
 
 void settext(Mat img, int lvl) {
 	string text = "";
+void loadTutorial(int ntut) {
 
 	switch (lvl) {
 	case 0:
@@ -88,7 +89,6 @@ void settext(Mat img, int lvl) {
 		Scalar::all(255), thickness, 8);
 }
 
-void loadTutorial(int ntut) {
 
 
 	Mat tutorial;
@@ -148,7 +148,7 @@ void Confirm(vector<int> vectInput, int level) {
 	Mat test;
 	test = img.clone();
 	for (int i = 0; i < 4; i++) {
-		if (vectInput[i] == getCorrectCards()[i]) {
+		if (vectInput[i] == getCorrectCards(level)[i]) {
 			//cout << "Input card: " << vectInput[i] << ". Correct card: " << correctCards[i] << ". They are matching." << endl;
 			cardResults[i] = { 1 };
 

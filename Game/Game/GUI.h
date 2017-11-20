@@ -1,5 +1,5 @@
-#ifndef GUI 
-#define GUI
+#ifndef GUI_H
+#define GUI_H
 
 #include <opencv2\opencv.hpp> 
 #include <iostream> 

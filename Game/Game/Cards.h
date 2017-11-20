@@ -1,5 +1,4 @@
-#ifndef Cards 
-#define Cards
+#pragma once
 
 #define _USE_MATH_DEFINES
 
@@ -11,9 +10,17 @@
 using namespace cv;
 using namespace std;
 
-//vector<vector<Point> > foundBlobs;
+struct cardSlot {
+	int chord;
+	int id;
+};
+
+const int SLOTS_NUM = 4;
+
+//thread cardSlotThread[SLOTS_NUM];
+
 vector<int> getCurCards();
 
-void detectCards(Camera* myCamera, Rect cardROI);	
+//vector<cardSlot> slots(SLOTS_NUM);
 
-#endif
+void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread);

@@ -1,16 +1,28 @@
 #include "Levels.h"
-//#include <opencv2\opencv.hpp>
-//#include <iostream>
-//#include <chrono>
-//#include <thread>
-//#include <functional>
+
 #include "GUI.h"
-//using namespace cv;
-//using namespace std;
 
-vector<int> correctCards = { 1,2,3,4 };
+vector<int> getCorrectCards(int lvl) {
+	vector<int> correctCards;
 
-vector<int> getCorrectCards() {
+	switch (lvl)
+	{
+	case 1:
+		correctCards = { 1, 5, 4, 0 };
+		break;
+	case 2:
+		correctCards = { 1, 7, 4, 0 };
+		break;
+	case 3: 
+		correctCards = { 1, 5, 4, 3 };
+		break;
+	case 4: 
+		correctCards = { 1, 7, 6, 5 };
+		break;
+	default:
+		break;
+	}
+	cout << "current level is: " << lvl << endl;
 	return correctCards;
 }
 

@@ -6,8 +6,13 @@
 using namespace std;
 using namespace cv;
 
+
 //Global
 int roiStartX = 470, roiShiftX = 137, roiY = 172, roiW = 100, roiH = 100;
+
+thread cardSlotThread[SLOTS_NUM];
+
+vector<cardSlot> slots(SLOTS_NUM);
 
 
 
@@ -22,19 +27,23 @@ int main()
 	}
 
 	//make vector of card ROIs
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < SLOTS_NUM; i++) {
 	cardROIs.push_back(Rect(roiStartX, roiY, roiW, roiH));
+
+	slots[i].id = i+1;
+
+	cardSlotThread[i] = thread(detectCards, myCam, cardROIs[i], ref(slots[i]), ref(cardSlotThread[i]));
 
 	roiStartX -= roiShiftX;
 	}
 
-	thread cardDetectThread(detectCards, myCam, cardROIs[0]);
+	//thread cardDetectThread(detectCards, myCam, cardROIs[0]);
 
 	
 
 	checkLevel(getLvl());
 
-	cardDetectThread.detach();
+	//cardDetectThread.detach();
 
 	while (true) {
 

@@ -1,5 +1,5 @@
-#ifndef Levels 
-#define Levels
+#ifndef LEVELS_H
+#define LEVELS_H
 
 #include <opencv2\opencv.hpp> 
 #include <iostream> 
@@ -11,7 +11,7 @@ void checkLevel(int lvl);
 int getLvl();
 void setLvl(int lvl);
 vector<int> getCurCards();
-vector<int> getCorrectCards();
+vector<int> getCorrectCards(int lvl);
 //void checkTutorial(int ntut);
 int getTut();
 void setTut(int ntut);
