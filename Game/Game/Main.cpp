@@ -15,6 +15,9 @@ thread cardSlotThread[SLOTS_NUM];
 vector<cardSlot> slots(SLOTS_NUM);
 
 
+vector<cardSlot> slots(SLOTS_NUM);
+
+
 
 
 int main()
