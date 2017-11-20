@@ -1,5 +1,5 @@
-#ifndef Levels 
-#define Levels
+#ifndef LEVELS_H
+#define LEVELS_H
 
 #include <opencv2\opencv.hpp> 
 #include <iostream> 

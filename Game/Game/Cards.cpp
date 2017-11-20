@@ -1,13 +1,15 @@
 #include "Cards.h"
 #include "Sounds.h"
 
-vector<int> curCards = { 1,2,3,4 };
+vector<int> curCards = { 0,0,0,0 };
+//vector<int> curCards;
+
 
 vector<int> getCurCards() {
 	return curCards;
 }
 
-void detectCards(Camera* myCamera, Rect cardROI) {
+void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread) {
 
 	bool isChordPlayed = false;
 	vector<vector<Point> > foundBlobs;
@@ -15,16 +17,16 @@ void detectCards(Camera* myCamera, Rect cardROI) {
 	Mat cameraFrame;
 	Mat thresholdedFrame;
 
-	//Rect cardROI = Rect(roiStartX, roiY, roiW, roiH);
-
 	Mat cardSlotMat;
 
-	namedWindow("contours", 1);
-	namedWindow("cam", 1);
-	moveWindow("cam", 50, 50);
+	namedWindow("contours" + to_string(slot.id), 1);
+	namedWindow("cam" + to_string(slot.id), 1);
+	moveWindow("cam" + to_string(slot.id), 50, 50);
 
 	//unconditional loop
 	while (true) {
+
+		waitKey(500);
 
 		cameraFrame = myCamera->getCameraFrame();
 
@@ -38,7 +40,6 @@ void detectCards(Camera* myCamera, Rect cardROI) {
 
 		cardSlotMat = Mat(thresholdedFrame, cardROI);
 
-		//Mat roiMatrix(thresholdedFrame, cardROI[1]);  //define roi matrix for blob detection
 
 		Mat cnt_img = Mat::zeros(cameraFrame.rows, cameraFrame.cols, CV_8UC3);   //matrix for displaying frame with blob detection
 
@@ -47,8 +48,7 @@ void detectCards(Camera* myCamera, Rect cardROI) {
 
 		//findContours(thresholdedFrame, contours0, noArray(), RETR_LIST, CHAIN_APPROX_NONE);  //find blobs in frame
 
-		vector<vector<Point> > firstSlotBlobs;
-
+		vector<vector<Point> > slotBlobs;
 
 		if (foundBlobs.size() != 0) {
 
@@ -70,18 +70,18 @@ void detectCards(Camera* myCamera, Rect cardROI) {
 				double circularity = 4 * M_PI*contourArea(foundBlobs[i]) / pow(arcLength(foundBlobs[i], true), 2);
 
 				if (contourArea(foundBlobs[i]) >= 30 && contourArea(foundBlobs[i]) <= 1000 && circularity > 0.8) {
-					firstSlotBlobs.push_back(foundBlobs[i]);
+					slotBlobs.push_back(foundBlobs[i]);
 				}
 			}
 
 
 			Scalar color(188, 255, 255);
-			for (size_t i = 0; i < firstSlotBlobs.size(); i++)
+			for (size_t i = 0; i < slotBlobs.size(); i++)
 			{
 
-				drawContours(cnt_img, firstSlotBlobs, i, color, -1, 8, noArray(), 2, Point(cardROI.x, cardROI.y));
+				drawContours(cnt_img, slotBlobs, i, color, -1, 8, noArray(), 2, Point(cardROI.x, cardROI.y));
 
-				Rect boundingBox = boundingRect(firstSlotBlobs[i]);
+				Rect boundingBox = boundingRect(slotBlobs[i]);
 				boundingBox += Point(cardROI.x, cardROI.y);
 
 				rectangle(cameraFrame, boundingBox, Scalar(255, 0, 0), 2);
@@ -91,25 +91,38 @@ void detectCards(Camera* myCamera, Rect cardROI) {
 		rectangle(cameraFrame, cardROI, Scalar(255, 0, 0), 2);
 
 
-		imshow("cam", cameraFrame);           //show color frame
+		imshow("cam" + to_string(slot.id), cameraFrame);           //show color frame
 
 
 		//imshow("thresholded frame", thresholdedFrame);
 
-		imshow("contours", cnt_img);        //show blob detection frame
+		imshow("contours" + to_string(slot.id), cnt_img);        //show blob detection frame
 
-		if (firstSlotBlobs.size() != 0 && !isChordPlayed) {
+		if (slotBlobs.size() != 0 && !isChordPlayed) {
 
-			PlayChord(firstSlotBlobs.size());
+			slot.chord = slotBlobs.size();
+
+			PlayChord(slot.chord);
 			//cout << "Number of blobs: " << firstSlotBlobs.size() << " area of biggest blob: " << contourArea(firstSlotBlobs[0]) << endl;
 			isChordPlayed = true;
+
+			for (int i = 0; i < SLOTS_NUM; i++) {
+				if (slot.id == i + 1) {
+					curCards.insert(curCards.begin() + i, slot.chord);
+				}
+				cout << "slot " << i << ": " << curCards.at(i) << endl;
+			}
+
 		}
-		else if (firstSlotBlobs.size() == 0) {
+		else if (slotBlobs.size() == 0) {
 			isChordPlayed = false;
 		}
 
+
+
 		if (waitKey(30) >= 0)
 			break;
-	}
 
+	}//end while
+	thread.detach();
 }

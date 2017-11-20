@@ -1,5 +1,5 @@
-#ifndef Sounds
-#define Sounds
+#ifndef SOUNDS_H
+#define SOUNDS_H
 
 #include <iostream> 
 #include <SFML/Audio.hpp>

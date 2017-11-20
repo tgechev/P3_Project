@@ -8,7 +8,7 @@
 //using namespace cv;
 //using namespace std;
 
-vector<int> correctCards = { 1,2,3,4 };
+vector<int> correctCards = { 1,7,4,0 };
 
 vector<int> getCorrectCards() {
 	return correctCards;
