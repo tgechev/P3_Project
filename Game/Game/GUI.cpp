@@ -40,8 +40,8 @@ vector<int> cardResultsPositive = { 1,1,1,1 };
 string winName = "EXCITING GAME";
 
 Mat img;
-Mat correct = imread("images/correct.png", CV_LOAD_IMAGE_COLOR);
-Mat wrong = imread("images/wrong.png", CV_LOAD_IMAGE_COLOR);
+Mat correct = imread("images/Correct.png", CV_LOAD_IMAGE_COLOR);
+Mat wrong = imread("images/Wrong.png", CV_LOAD_IMAGE_COLOR);
 
 void settext(Mat img, int lvl) {
 	string text = "";
