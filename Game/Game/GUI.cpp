@@ -106,12 +106,17 @@ void loadTutorial(int ntut) {
 	//waitKey(0);
 }
 
-void loadLevel() {
+void loadLevel(int lvl) {
 
 	
 	Mat test;
 
-	img = imread("images/bg.png", CV_LOAD_IMAGE_COLOR);
+	if ((lvl == 1) || (lvl == 2)) {
+		img = imread("images/bg3chords.png", CV_LOAD_IMAGE_COLOR);
+	}
+	else {
+		img = imread("images/bg.png", CV_LOAD_IMAGE_COLOR);
+	}
 	test = img.clone();
 
 	//making the buttons
@@ -266,7 +271,7 @@ void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata)
 				setTut(0);
 				cout << getTut() << endl;
 				//setLvl(2);
-				loadLevel();
+				loadLevel(1);
 			}
 		}
 	}

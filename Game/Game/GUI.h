@@ -8,7 +8,7 @@ using namespace std;
 
 
 void mainMenu();
-void loadLevel();
+void loadLevel(int lvl);
 void loadCredits();
 void callBackFuncCredits(int event, int x, int y, int flags, void* userdata);
 void callBackFuncMenu(int event, int x, int y, int flags, void* userdata);

@@ -60,15 +60,15 @@ void checkLevel(int lvl)
 		break;
 	case 2:
 		cout << "level 1" << endl;
-		loadLevel();
+		loadLevel(lvl);
 		break;
 	case 3:
 		cout << "Level 2" << endl;
-		loadLevel();
+		loadLevel(lvl);
 		break;
 	case 4:
 		cout << "Level 3" << endl;
-		loadLevel();
+		loadLevel(lvl);
 		break;
 	case 5:
 		cout << "Credits" << endl;
