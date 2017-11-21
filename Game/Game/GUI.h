@@ -17,5 +17,4 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata);
 void loadTutorial(int ntut);
 void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata);
 void setTextChords(int lvl, Mat image);
-//Add settext for artist, song, chords(in the bottom) based on library in levels.
 #endif
