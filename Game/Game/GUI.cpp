@@ -162,7 +162,7 @@ void loadLevel(int lvl) {
 	Mat test;
 
 	if ((lvl == 1) || (lvl == 2)) {
-		img = imread("images/bg3chords.png", CV_LOAD_IMAGE_COLOR);
+		img = imread("images/bg3chords.jpg", CV_LOAD_IMAGE_COLOR);
 	}
 	else {
 		img = imread("images/bg.jpg", CV_LOAD_IMAGE_COLOR);
