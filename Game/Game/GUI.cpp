@@ -68,12 +68,12 @@ void setTextSongInfo(int lvl, Mat image) {
 	int baseline = 0;
 	string artist = songVec.at(lvl-1).at(0);
 	string song = songVec.at(lvl-1).at(1);
-	Size textSize = getTextSize(artist, fontFace, fontScale, thickness, &baseline);
+	//Size textSize = getTextSize(artist, fontFace, fontScale, thickness, &baseline);
 	baseline += thickness;
 	Point textSong(50, 50);
 	Point textArtist(50, 70);
-	putText(image, artist, textArtist, fontFace, fontScale, Scalar::all(0), thickness, 8);
-	putText(image, song, textSong, fontFace, fontScale, Scalar::all(0), thickness, 8);
+	putText(image, song, textSong, fontFace, fontScale+0.3, Scalar::all(255), thickness, 8);
+	putText(image, artist, textArtist, fontFace, fontScale, Scalar::all(255), thickness, 8);
 
 }
 
@@ -90,7 +90,7 @@ void setTextChords(int lvl, Mat image) {
 	for (int i = 0; i < chordsVec.at(lvl).size(); i++) {
 		chord = chordsVec.at(lvl).at(i);
 		Point textOrg(((120*(i+1))-textSize.width/2), 650);
-		putText(image, chord, textOrg, fontFace, fontScale,	Scalar::all(0), thickness, 8);	
+		putText(image, chord, textOrg, fontFace, fontScale,	Scalar::all(255), thickness, 8);	
 	}
 	
 }
