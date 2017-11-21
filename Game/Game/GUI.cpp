@@ -36,15 +36,17 @@ Rect timeline4;
 bool timeline;
 */
 
-//
+//vectors
 vector<int> cardResults = { 0,0,0,0 };
 vector<int> cardResultsPositive = { 1,1,1,1 };
 vector< vector<string> > chordsVec;
 vector< vector<string> > songVec;
+vector<string> lvlVec;
 //Window name
 string winName = "EXCITING GAME";
 
 Mat img;
+Mat testTemp;
 Mat correct = imread("images/Correct.png", IMREAD_COLOR);
 Mat wrong = imread("images/Wrong.png", IMREAD_COLOR);
 void getTextData() {
@@ -56,6 +58,7 @@ void getTextData() {
 	vector<string> song1 = { "AC/DC", "Back in Black" };
 	vector<string> song2 = { "Madonna", "La Isla Bonita" };
 	vector<string> song3 = {"Ray Charles", "Hit the road, Jack"};
+	lvlVec = {"Tutorial", "Level 1", "Level 2", "Level 3"};
 	
 	chordsVec = {LvlT, Lvl1, Lvl2, Lvl3};
 	songVec = { songT, song1, song2, song3 };
@@ -88,55 +91,26 @@ void setTextChords(int lvl, Mat image) {
 	Size textSize = getTextSize(chord, fontFace, fontScale, thickness, &baseline);
 	baseline += thickness;
 	
-	for (size_t i = 0; i < chordsVec.at(lvl).size(); i++) {
-		chord = chordsVec.at(lvl).at(i);
+	for (size_t i = 0; i < chordsVec.at(lvl-1).size(); i++) {
+		chord = chordsVec.at(lvl-1).at(i);
 		Point textOrg(((120*(i+1))-textSize.width/2), 650);
 		putText(image, chord, textOrg, fontFace, fontScale,	Scalar::all(255), thickness, 8);	
 	}
 	
 }
 
-void settext(Mat img, int lvl) {
-	string text = "";
-
-
-	switch (lvl) {
-	case 0:
-		text = "";
-		break;
-	case 1:
-		text = "Tutorial";
-		break;
-	case 2:
-		text = "level 1";
-		break;
-	case 3:
-		text = "level 2";
-		break;
-	case 4:
-		text = "level 3";
-		break;
-	case 5:
-		text = "Credits";
-		break;
-	default:
-		text = "";
-	}
-
+void setLvlText(int lvl, Mat image) {
+	getTextData();
+	
 	int fontFace = FONT_HERSHEY_SIMPLEX;
-	double fontScale = 1;
+	double fontScale = 0.5;
 	int thickness = 2;
-
 	int baseline = 0;
-	Size textSize = getTextSize(text, fontFace, fontScale, thickness, &baseline);
+	string lvltext = lvlVec.at(lvl-1);
+	Size textSize = getTextSize(lvltext, fontFace, fontScale, thickness, &baseline);
 	baseline += thickness;
-
-	// center the text
-	Point textOrg((img.cols - textSize.width) / 2, (img.rows + textSize.height) / 12);
-
-	// then put the text itself
-	putText(img, text, textOrg, fontFace, fontScale,
-		Scalar::all(255), thickness, 8);
+	Point textOrg(image.cols/2-textSize.width, 50);
+	putText(image, lvltext, textOrg, fontFace, fontScale + 0.3, Scalar::all(255), thickness, 8);
 }
 
 void loadTutorial(int ntut) {
@@ -157,16 +131,16 @@ void loadTutorial(int ntut) {
 }
 
 void loadLevel(int lvl) {
-	
-	Mat test;
+
+	Mat temp;
 
 	if ((lvl == 1) || (lvl == 2)) {
-		img = imread("images/bg3chords.png", CV_LOAD_IMAGE_COLOR);
+		img = imread("images/bg3chords.jpg", CV_LOAD_IMAGE_COLOR);
 	}
 	else {
 		img = imread("images/bg.jpg", CV_LOAD_IMAGE_COLOR);
 	}
-	test = img.clone();
+	temp = img.clone();
 
 	//making the buttons
 	btnRepeat = Rect(190, 457, 114, 62);
@@ -179,13 +153,12 @@ void loadLevel(int lvl) {
 
 	namedWindow(winName);
 	setMouseCallback(winName, callBackFunc);
-	setTextChords(lvl - 1, test);
-	setTextSongInfo(lvl, test);
 
-	levelRunning = true;
-
-	imshow(winName, test);
-	//waitKey(0);
+	setTextChords(lvl, temp);
+	setTextSongInfo(lvl, temp);
+	setLvlText(lvl, temp);
+	testTemp = temp.clone();
+	imshow(winName, temp);
 }
 
 void loadCredits() {
@@ -202,19 +175,15 @@ void loadCredits() {
 }
 
 
-void Confirm(vector<int> vectInput, int level) {
-	Mat test;
-	test = img.clone();
+void Confirm(vector<int> vectInput, int level, Mat orgImg) {
+	Mat temp;
+	temp = orgImg.clone();
 	for (int i = 0; i < 4; i++) {
 		if (vectInput[i] == getCorrectCards(level)[i]) {
-			//cout << "Input card: " << vectInput[i] << ". Correct card: " << correctCards[i] << ". They are matching." << endl;
 			cardResults[i] = { 1 };
-
 		}
 		else {
 			cardResults[i] = { 0 };
-			//cout << "Input card: " << vectInput[i] << ". Correct card: " << correctCards[i] << ". They are not matching." << endl;
-
 		}
 	}
 	//printing the results
@@ -229,21 +198,17 @@ void Confirm(vector<int> vectInput, int level) {
 	for (size_t i = 0; i<cardResults.size(); ++i) {
 		cout << "The results are: " << cardResults[i] << endl;
 		if (cardResults[i] == 1) {
-			correct.copyTo(test(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
-
+			correct.copyTo(temp(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
 		}
 		else {
-			wrong.copyTo(test(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
-
+			wrong.copyTo(temp(Rect(147 + (226 * i), 225, correct.cols, correct.rows)));
 		}
-
-
 	}
 
-	imshow(winName, test);
-	cout << "Checked and confirmed!" << endl;
+	imshow(winName, temp);
+	//cout << "Checked and confirmed!" << endl;
 	waitKey(2000);
-	imshow(winName, img);
+	imshow(winName, orgImg);
 
 }
 
@@ -259,7 +224,7 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 		}
 		else if (btnConfirm.contains(Point(x, y)))
 		{
-			Confirm(getCurCards(), getLvl());
+			Confirm(getCurCards(), getLvl(), testTemp);
 
 		}
 		else if (btnBack.contains(Point(x, y)))
@@ -271,10 +236,8 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 		}
 		else if (playButton1.contains(Point(x, y)))
 		{
+			cout << "Play 1" << endl;
 			PlaySnippet(1);
-
-			//only one rect
-			//use int
 		}
 		else if (playButton2.contains(Point(x, y)))
 		{
@@ -316,7 +279,7 @@ void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata)
 		if (btnNext.contains(Point(x, y)))
 		{
 			cout << "Next!" << endl;
-			if (getTut() <= 4) {
+			if (getTut() <= 5) {
 				setTut(getTut() + 1);
 				loadTutorial(getTut());
 			}
