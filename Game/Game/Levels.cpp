@@ -53,6 +53,8 @@ void runLevel(int lvl)
 	switch (lvl) {
 	case 0:
 		mainMenu();
+
+		//runMenuThreads();
 		break;
 	case 1:
 		cout << "Tutorial level!" << endl;

@@ -314,7 +314,7 @@ void mainMenu() {
 	setMouseCallback(winName, callBackFuncMenu);
 
 	imshow(winName, img);
-	waitKey(0);
+
 }
 void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 {

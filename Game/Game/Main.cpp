@@ -11,10 +11,12 @@ int main()
 
 	runLevel(getLvl());
 
-	while (true) {
+	waitKey(0);
+
+	//while (true) {
 
 
-	}
+	//}
 
 	return 0;
 }
