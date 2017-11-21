@@ -38,13 +38,62 @@ bool timeline;
 //
 vector<int> cardResults = { 0,0,0,0 };
 vector<int> cardResultsPositive = { 1,1,1,1 };
-
+vector< vector<string> > chordsVec;
+vector< vector<string> > songVec;
 //Window name
 string winName = "EXCITING GAME";
 
 Mat img;
 Mat correct = imread("images/Correct.png", IMREAD_COLOR);
 Mat wrong = imread("images/Wrong.png", IMREAD_COLOR);
+void getTextData() {
+	vector<string> LvlT = { "G", "Am", "Bm", "C", "D", "Em", "F#dim" };
+	vector<string> Lvl1 = { "E5", "F5", "G5", "A5", "B5", "C5", "D5" };
+	vector<string> Lvl2 = { "Dm", "Edim", "F", "Gm", "Am", "Bb", "C" };
+	vector<string> Lvl3 = { "Am", "Bdim", "C", "Dm", "E7", "F", "G" };
+	vector<string> songT = { "Bob Dylan", "Knocking on heaven's door" };
+	vector<string> song1 = { "AC/DC", "Back in Black" };
+	vector<string> song2 = { "Madonna", "La Isla Bonita" };
+	vector<string> song3 = {"Ray Charles", "Hit the road, Jack"};
+	
+	chordsVec = {LvlT, Lvl1, Lvl2, Lvl3};
+	songVec = { songT, song1, song2, song3 };
+}
+
+void setTextSongInfo(int lvl, Mat image) {
+	getTextData();
+	int fontFace = FONT_HERSHEY_SIMPLEX;
+	double fontScale = 0.7;
+	int thickness = 2;
+	int baseline = 0;
+	string artist = songVec.at(lvl-1).at(0);
+	string song = songVec.at(lvl-1).at(1);
+	//Size textSize = getTextSize(artist, fontFace, fontScale, thickness, &baseline);
+	baseline += thickness;
+	Point textSong(50, 50);
+	Point textArtist(50, 70);
+	putText(image, song, textSong, fontFace, fontScale+0.3, Scalar::all(255), thickness, 8);
+	putText(image, artist, textArtist, fontFace, fontScale, Scalar::all(255), thickness, 8);
+
+}
+
+void setTextChords(int lvl, Mat image) {
+	getTextData();
+	string chord = "";
+	int fontFace = FONT_HERSHEY_SIMPLEX;
+	double fontScale = 1.2;
+	int thickness = 2;
+	int baseline = 0;
+	Size textSize = getTextSize(chord, fontFace, fontScale, thickness, &baseline);
+	baseline += thickness;
+	
+	for (size_t i = 0; i < chordsVec.at(lvl).size(); i++) {
+		chord = chordsVec.at(lvl).at(i);
+		Point textOrg(((120*(i+1))-textSize.width/2), 650);
+		putText(image, chord, textOrg, fontFace, fontScale,	Scalar::all(255), thickness, 8);	
+	}
+	
+}
 
 void settext(Mat img, int lvl) {
 	string text = "";
@@ -106,12 +155,18 @@ void loadTutorial(int ntut) {
 	//waitKey(0);
 }
 
-void loadLevel() {
+void loadLevel(int lvl) {
 
+	
 	
 	Mat test;
 
-	img = imread("images/bg.png", CV_LOAD_IMAGE_COLOR);
+	if ((lvl == 1) || (lvl == 2)) {
+		img = imread("images/bg3chords.png", CV_LOAD_IMAGE_COLOR);
+	}
+	else {
+		img = imread("images/bg.jpg", CV_LOAD_IMAGE_COLOR);
+	}
 	test = img.clone();
 
 	//making the buttons
@@ -125,8 +180,9 @@ void loadLevel() {
 
 	namedWindow(winName);
 	setMouseCallback(winName, callBackFunc);
-
-	imshow(winName, img);
+	setTextChords(lvl - 1, test);
+	setTextSongInfo(lvl, test);
+	imshow(winName, test);
 	//waitKey(0);
 }
 
@@ -266,7 +322,7 @@ void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata)
 				setTut(0);
 				cout << getTut() << endl;
 				//setLvl(2);
-				loadLevel();
+				loadLevel(1);
 			}
 		}
 	}

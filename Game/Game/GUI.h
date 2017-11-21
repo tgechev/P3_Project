@@ -8,14 +8,14 @@ using namespace std;
 
 
 void mainMenu();
-void loadLevel();
+void loadLevel(int lvl);
 void loadCredits();
 void callBackFuncCredits(int event, int x, int y, int flags, void* userdata);
 void callBackFuncMenu(int event, int x, int y, int flags, void* userdata);
 void Confirm(vector<int> vectInput, int level);
 void callBackFunc(int event, int x, int y, int flags, void* userdata);
-void settext(Mat img, int lvl);
 void loadTutorial(int ntut);
 void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata);
+void setTextChords(int lvl, Mat image);
 //Add settext for artist, song, chords(in the bottom) based on library in levels.
 #endif
