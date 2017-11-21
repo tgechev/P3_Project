@@ -24,6 +24,7 @@ const int mbRoiShiftX = 430, mbRoiShiftY = 67, mbRoiW = 150, mbRoiH = 50;
 extern int cRoiStartX, mbRoiStartX, mbRoiStartY;
 
 extern bool levelRunning;
+extern bool isInMenu;
 
 extern thread cardSlotThread[];
 extern thread mbThread[];
@@ -41,7 +42,7 @@ void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread)
 
 void runCardThreads();
 
-void mbBlobDetect(Rect mbROI, int buttonId, thread &thread);
+void mbBlobDetect(Camera* myCamera, Rect mbROI, int buttonId, thread &thread);
 
 void runMenuThreads();
 

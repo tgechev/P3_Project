@@ -127,6 +127,8 @@ void loadTutorial(int ntut) {
 	setMouseCallback(winName, callBackFuncTutorial);
 
 	imshow(winName, tutorial);
+
+	isInMenu = false;
 	//waitKey(0);
 }
 
@@ -158,6 +160,8 @@ void loadLevel(int lvl) {
 	setLvlText(lvl, temp);
 	testTemp = temp.clone();
 	imshow(winName, temp);
+
+	isInMenu = false;
 }
 
 void loadCredits() {
@@ -171,6 +175,8 @@ void loadCredits() {
 	setMouseCallback(winName, callBackFuncCredits);
 
 	imshow(winName, img);
+
+	isInMenu = false;
 }
 
 
@@ -230,6 +236,8 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 		{
 			cout << "Back!" << endl;
 			setLvl(0);
+
+			setTut(1);
 			levelRunning = false;
 			runLevel(getLvl());
 		}
@@ -266,6 +274,8 @@ void callBackFuncCredits(int event, int x, int y, int flags, void* userdata)
 		{
 			cout << "Back!" << endl;
 			setLvl(0);
+			isInMenu = true;
+
 			runLevel(getLvl());
 		}
 	}
@@ -315,6 +325,8 @@ void mainMenu() {
 
 	imshow(winName, img);
 
+	isInMenu = true;
+
 }
 void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 {
@@ -323,6 +335,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 		if (btnExit.contains(Point(x, y)))
 		{
 			cout << "Exit12" << endl;
+			//isInMenu = false;
 			destroyAllWindows();
 		}
 		else {
@@ -351,7 +364,9 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 				cout << "Level 3" << endl;
 				setLvl(4);
 			}
-			runLevel(getLvl());
+			if (getLvl() != 0) {
+				runLevel(getLvl());
+			}
 		}
 	}
 

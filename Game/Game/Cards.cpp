@@ -14,6 +14,7 @@ int mbRoiStartX = 20, mbRoiStartY = 150;
 
 
 bool levelRunning = false;
+bool isInMenu = true;
 
 thread cardSlotThread[SLOTS_NUM];
 thread mbThread[MENU_BUT_NUM];
@@ -53,21 +54,23 @@ vector<vector<Point>> sortBlobs(vector<vector<Point>> blobs) {
 	return blobs;
 }
 
-void mbBlobDetect(Rect mbROI, int buttonId, thread &thread) {
+void mbBlobDetect(Camera* myCamera, Rect mbROI, int buttonId, thread &thread) {
 
 	vector<vector<Point> > mbFoundBlobs;
 	Mat mbCameraFrame;
 	Mat mbThresholdedFrame;
 	Mat menuButtonMat;
 
-	namedWindow("menuCam" + buttonId, 1);
-	moveWindow("menuCam" + buttonId, 30, 30);
+	namedWindow("menuCam" + to_string(buttonId), 1);
+	moveWindow("menuCam" + to_string(buttonId), 30, 30);
 
-	while (true) {
+	while (isInMenu) {
 
-		waitKey(200);
+		cout << "menu button thread here" << endl;
 
-		mbCameraFrame = myCam->getCameraFrame();
+		waitKey(500);
+
+		mbCameraFrame = myCamera->getCameraFrame();
 
 		cvtColor(mbCameraFrame, mbThresholdedFrame, CV_BGR2GRAY);  //convert frame to grayscale
 
@@ -84,6 +87,7 @@ void mbBlobDetect(Rect mbROI, int buttonId, thread &thread) {
 		vector<vector<Point> > mbFilteredBlobs;
 
 		if (mbFoundBlobs.size() != 0) {
+
 			mbFoundBlobs = sortBlobs(mbFoundBlobs);
 
 			for (size_t i = 0; i < mbFoundBlobs.size(); i++)
@@ -95,15 +99,27 @@ void mbBlobDetect(Rect mbROI, int buttonId, thread &thread) {
 				}
 			}
 
+			//drawing bounding box
+			for (size_t i = 0; i < mbFilteredBlobs.size(); i++)
+			{
+				Rect boundingBox = boundingRect(mbFilteredBlobs[i]);
+				boundingBox += Point(mbROI.x, mbROI.y);
 
+				rectangle(mbCameraFrame, boundingBox, Scalar(255, 0, 0), 2);
+			}
 
+			rectangle(mbCameraFrame, mbROI, Scalar(255, 0, 0), 2);
+
+			imshow("menuCam" + to_string(buttonId), mbCameraFrame);
+
+			for (int i = 0; i < MENU_BUT_NUM; i++) {
+				if (mbFilteredBlobs.size()==1) {
+					if (buttonId == 6) {
+						destroyAllWindows();
+					}
+				}
+			}
 		}
-
-
-
-		rectangle(mbCameraFrame, mbROI, Scalar(255, 0, 0), 2);
-
-		imshow("menuCam" + buttonId, mbCameraFrame);
 
 		if (waitKey(30) >= 0)
 			break;
@@ -112,6 +128,10 @@ void mbBlobDetect(Rect mbROI, int buttonId, thread &thread) {
 }
 
 void runMenuThreads() {
+
+	if (!myCam->getStream().isOpened()) { //check if video device has been initialised
+		cout << "cannot open camera";
+	}
 
 	for (int i = 0; i < MENU_BUT_NUM; i++) {
 		if (i % 2 == 0) {
@@ -122,7 +142,7 @@ void runMenuThreads() {
 			mbRoiStartY += mbRoiShiftY;
 		}
 
-		mbThread[i] = thread(mbBlobDetect, mbROIs[i], i + 1, ref(mbThread[i]));
+		mbThread[i] = thread(mbBlobDetect, myCam, mbROIs[i], i + 1, ref(mbThread[i]));
 	}
 }
 
