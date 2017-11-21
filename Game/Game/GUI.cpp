@@ -275,7 +275,7 @@ void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata)
 		if (btnNext.contains(Point(x, y)))
 		{
 			cout << "Next!" << endl;
-			if (getTut() <= 4) {
+			if (getTut() <= 5) {
 				setTut(getTut() + 1);
 				loadTutorial(getTut());
 			}
