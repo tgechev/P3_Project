@@ -165,7 +165,7 @@ void loadLevel(int lvl) {
 		img = imread("images/bg3chords.png", CV_LOAD_IMAGE_COLOR);
 	}
 	else {
-		img = imread("images/bg.png", CV_LOAD_IMAGE_COLOR);
+		img = imread("images/bg.jpg", CV_LOAD_IMAGE_COLOR);
 	}
 	test = img.clone();
 
