@@ -8,21 +8,14 @@ using namespace cv;
 
 
 //Global
-int level = 0;
 int roiStartX = 470, roiShiftX = 137, roiY = 172, roiW = 100, roiH = 100;
 
 thread cardSlotThread[SLOTS_NUM];
 
 vector<cardSlot> slots(SLOTS_NUM);
 
-int getLvl() {
-	return level;
-}
 
-void setLvl(int lvl) {
 
-	level = lvl;
-}
 
 int main()
 {

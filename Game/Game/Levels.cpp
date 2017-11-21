@@ -1,13 +1,6 @@
 #include "Levels.h"
-//#include <opencv2\opencv.hpp>
-//#include <iostream>
-//#include <chrono>
-//#include <thread>
-//#include <functional>
-#include "GUI.h"
-//using namespace cv;
-//using namespace std;
 
+#include "GUI.h"
 
 vector<int> getCorrectCards(int lvl) {
 	vector<int> correctCards;
@@ -15,21 +8,44 @@ vector<int> getCorrectCards(int lvl) {
 	switch (lvl)
 	{
 	case 1:
-		correctCards = { 1, 4, 5, 0 };
+		correctCards = { 1, 5, 4, 0 };
 		break;
 	case 2:
-		correctCards = { 1, 4, 7, 0 };
+		correctCards = { 1, 7, 4, 0 };
 		break;
 	case 3: 
-		correctCards = { 1, 3, 4, 5 };
+		correctCards = { 1, 5, 4, 3 };
 		break;
 	case 4: 
-		correctCards = { 1, 5, 6, 7 };
+		correctCards = { 1, 7, 6, 5 };
 		break;
 	default:
 		break;
 	}
+	cout << "current level is: " << lvl << endl;
 	return correctCards;
+}
+
+int level = 0;
+int tutlevel = 1;
+
+//LEVEL STUFF
+int getLvl() {
+	return level;
+}
+
+void setLvl(int lvl) {
+	level = lvl;
+}
+
+//TUTORIAL STUFF
+int getTut() {
+	return tutlevel;
+}
+
+void setTut(int tut) {
+
+	tutlevel = tut;
 }
 
 void checkLevel(int lvl)
@@ -40,7 +56,7 @@ void checkLevel(int lvl)
 		break;
 	case 1:
 		cout << "Tutorial level!" << endl;
-		loadLevel(lvl);
+		loadTutorial(getTut());
 		break;
 	case 2:
 		cout << "level 1" << endl;
@@ -63,6 +79,7 @@ void checkLevel(int lvl)
 	}
 
 }
+
 
 
 

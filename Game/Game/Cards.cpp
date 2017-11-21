@@ -64,7 +64,7 @@ void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread)
 				}
 			}
 
-			//discarding blobs with area bigger than 500 and smaller than 18 //table
+			//discarding blobs with area bigger than 500 and smaller than 30 //table
 			for (size_t i = 0; i < foundBlobs.size(); i++)
 			{
 				double circularity = 4 * M_PI*contourArea(foundBlobs[i]) / pow(arcLength(foundBlobs[i], true), 2);
@@ -98,27 +98,25 @@ void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread)
 
 		imshow("contours" + to_string(slot.id), cnt_img);        //show blob detection frame
 
-		if (slotBlobs.size() != 0 && !isChordPlayed) {
+		for (int i = 0; i < SLOTS_NUM; i++) {
+			if (slot.id == i + 1) {
+				if (slotBlobs.size() != 0 && !isChordPlayed) {
 
-			slot.chord = slotBlobs.size();
+					slot.chord = slotBlobs.size();
+					PlayChord(slot.chord);
 
-			PlayChord(slot.chord);
-			//cout << "Number of blobs: " << firstSlotBlobs.size() << " area of biggest blob: " << contourArea(firstSlotBlobs[0]) << endl;
-			isChordPlayed = true;
+					isChordPlayed = true;
+					curCards.at(i) = slot.chord;
 
-			for (int i = 0; i < SLOTS_NUM; i++) {
-				if (slot.id == i + 1) {
-					curCards.insert(curCards.begin() + i, slot.chord);
 				}
-				cout << "slot " << i << ": " << curCards.at(i) << endl;
+				else if (slotBlobs.size() == 0 && isChordPlayed) {
+					isChordPlayed = false;
+
+					curCards.at(i) = 0;
+				}
 			}
-
+			cout << "slot " << i+1 << ": " << curCards.at(i) << endl;
 		}
-		else if (slotBlobs.size() == 0) {
-			isChordPlayed = false;
-		}
-
-
 
 		if (waitKey(30) >= 0)
 			break;

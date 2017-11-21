@@ -13,6 +13,9 @@ Rect btnLevel1;
 Rect btnLevel2;
 Rect btnLevel3;
 
+//Tutorial
+Rect btnNext;
+
 //level
 Rect btnRepeat;
 Rect btnConfirm;
@@ -41,8 +44,8 @@ vector< vector<string> > songVec;
 string winName = "EXCITING GAME";
 
 Mat img;
-Mat correct = imread("images/correct.png", CV_LOAD_IMAGE_COLOR);
-Mat wrong = imread("images/wrong.png", CV_LOAD_IMAGE_COLOR);
+Mat correct = imread("images/Correct.png", IMREAD_COLOR);
+Mat wrong = imread("images/Wrong.png", IMREAD_COLOR);
 void getTextData() {
 	vector<string> LvlT = { "G", "Am", "Bm", "C", "D", "Em", "F#dim" };
 	vector<string> Lvl1 = { "E5", "F5", "G5", "A5", "B5", "C5", "D5" };
@@ -95,6 +98,7 @@ void setTextChords(int lvl, Mat image) {
 void settext(Mat img, int lvl) {
 	string text = "";
 
+
 	switch (lvl) {
 	case 0:
 		text = "";
@@ -134,13 +138,35 @@ void settext(Mat img, int lvl) {
 		Scalar::all(255), thickness, 8);
 }
 
+void loadTutorial(int ntut) {
+
+	Mat tutorial;
+
+	tutorial = imread("images/Tutorial" + to_string(ntut) +".jpg", CV_LOAD_IMAGE_COLOR);
+
+
+	//making the buttons
+	btnNext = Rect(731, 615, 220, 78);
+
+	namedWindow(winName);
+	setMouseCallback(winName, callBackFuncTutorial);
+
+	imshow(winName, tutorial);
+	//waitKey(0);
+}
 
 void loadLevel(int lvl) {
+
 	
 	
 	Mat test;
 
-	img = imread("images/bg.png", CV_LOAD_IMAGE_COLOR);
+	if ((lvl == 1) || (lvl == 2)) {
+		img = imread("images/bg3chords.png", CV_LOAD_IMAGE_COLOR);
+	}
+	else {
+		img = imread("images/bg.png", CV_LOAD_IMAGE_COLOR);
+	}
 	test = img.clone();
 
 	//making the buttons
@@ -279,6 +305,29 @@ void callBackFuncCredits(int event, int x, int y, int flags, void* userdata)
 		}
 	}
 }
+
+void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata)
+{
+	if (event == EVENT_LBUTTONDOWN)
+	{
+		if (btnNext.contains(Point(x, y)))
+		{
+			cout << "Next!" << endl;
+			if (getTut() <= 4) {
+				setTut(getTut() + 1);
+				loadTutorial(getTut());
+			}
+
+			else {
+				setTut(0);
+				cout << getTut() << endl;
+				//setLvl(2);
+				loadLevel(1);
+			}
+		}
+	}
+}
+
 
 void mainMenu() {
 
