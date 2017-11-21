@@ -87,7 +87,7 @@ void setTextChords(int lvl, Mat image) {
 	Size textSize = getTextSize(chord, fontFace, fontScale, thickness, &baseline);
 	baseline += thickness;
 	
-	for (int i = 0; i < chordsVec.at(lvl).size(); i++) {
+	for (size_t i = 0; i < chordsVec.at(lvl).size(); i++) {
 		chord = chordsVec.at(lvl).at(i);
 		Point textOrg(((120*(i+1))-textSize.width/2), 650);
 		putText(image, chord, textOrg, fontFace, fontScale,	Scalar::all(255), thickness, 8);	
