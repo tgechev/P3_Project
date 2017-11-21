@@ -2,6 +2,7 @@
 //#include "Cards.h"
 #include "Levels.h"
 #include "Sounds.h"
+#include "Cards.h"
 
 //Global-ish
 Rect btnExit;
@@ -156,8 +157,6 @@ void loadTutorial(int ntut) {
 }
 
 void loadLevel(int lvl) {
-
-	
 	
 	Mat test;
 
@@ -182,6 +181,9 @@ void loadLevel(int lvl) {
 	setMouseCallback(winName, callBackFunc);
 	setTextChords(lvl - 1, test);
 	setTextSongInfo(lvl, test);
+
+	levelRunning = true;
+
 	imshow(winName, test);
 	//waitKey(0);
 }
@@ -264,7 +266,8 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 		{
 			cout << "Back!" << endl;
 			setLvl(0);
-			checkLevel(getLvl());
+			levelRunning = false;
+			runLevel(getLvl());
 		}
 		else if (playButton1.contains(Point(x, y)))
 		{
@@ -301,7 +304,7 @@ void callBackFuncCredits(int event, int x, int y, int flags, void* userdata)
 		{
 			cout << "Back!" << endl;
 			setLvl(0);
-			checkLevel(getLvl());
+			runLevel(getLvl());
 		}
 	}
 }
@@ -322,7 +325,11 @@ void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata)
 				setTut(0);
 				cout << getTut() << endl;
 				//setLvl(2);
+				
 				loadLevel(1);
+
+				levelRunning = true;
+				runCardThreads();
 			}
 		}
 	}
@@ -382,7 +389,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 				cout << "Level 3" << endl;
 				setLvl(4);
 			}
-			checkLevel(getLvl());
+			runLevel(getLvl());
 		}
 	}
 

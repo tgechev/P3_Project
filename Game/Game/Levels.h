@@ -7,7 +7,7 @@
 using namespace std;
 
 
-void checkLevel(int lvl);
+void runLevel(int lvl);
 int getLvl();
 void setLvl(int lvl);
 vector<int> getCurCards();

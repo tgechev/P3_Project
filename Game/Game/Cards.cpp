@@ -9,6 +9,36 @@ vector<int> getCurCards() {
 	return curCards;
 }
 
+int roiStartX = 470; //, roiShiftX = 137, roiY = 172, roiW = 100, roiH = 100;
+
+bool levelRunning = false;
+
+thread cardSlotThread[SLOTS_NUM];
+
+vector<cardSlot> slots(SLOTS_NUM);
+
+Camera* myCam = new Camera();
+
+vector<Rect> cardROIs;
+
+void runCardThreads() {
+
+	if (!myCam->getStream().isOpened()) { //check if video device has been initialised
+		cout << "cannot open camera";
+	}
+
+	//make vector of card ROIs
+	for (int i = 0; i < SLOTS_NUM; i++) {
+		cardROIs.push_back(Rect(roiStartX, roiY, roiW, roiH));
+
+		slots[i].id = i + 1;
+
+		cardSlotThread[i] = thread(detectCards, myCam, cardROIs[i], ref(slots[i]), ref(cardSlotThread[i]));
+
+		roiStartX -= roiShiftX;
+	}
+}
+
 void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread) {
 
 	bool isChordPlayed = false;
@@ -24,7 +54,7 @@ void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread)
 	moveWindow("cam" + to_string(slot.id), 50, 50);
 
 	//unconditional loop
-	while (true) {
+	while (levelRunning) {
 
 		waitKey(500);
 

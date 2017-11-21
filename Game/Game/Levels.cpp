@@ -1,5 +1,5 @@
 #include "Levels.h"
-
+#include "Cards.h"
 #include "GUI.h"
 
 vector<int> getCorrectCards(int lvl) {
@@ -48,7 +48,7 @@ void setTut(int tut) {
 	tutlevel = tut;
 }
 
-void checkLevel(int lvl)
+void runLevel(int lvl)
 {
 	switch (lvl) {
 	case 0:
@@ -61,14 +61,23 @@ void checkLevel(int lvl)
 	case 2:
 		cout << "level 1" << endl;
 		loadLevel(lvl);
+
+		levelRunning = true;
+		runCardThreads();
 		break;
 	case 3:
 		cout << "Level 2" << endl;
 		loadLevel(lvl);
+
+		levelRunning = true;
+		runCardThreads();
 		break;
 	case 4:
 		cout << "Level 3" << endl;
 		loadLevel(lvl);
+
+		levelRunning = true;
+		runCardThreads();
 		break;
 	case 5:
 		cout << "Credits" << endl;
