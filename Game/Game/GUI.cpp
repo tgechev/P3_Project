@@ -153,7 +153,6 @@ void loadLevel(int lvl) {
 
 	namedWindow(winName);
 	setMouseCallback(winName, callBackFunc);
-
 	setTextChords(lvl, temp);
 	setTextSongInfo(lvl, temp);
 	setLvlText(lvl, temp);
