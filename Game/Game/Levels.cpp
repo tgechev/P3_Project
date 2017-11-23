@@ -62,10 +62,12 @@ void runLevel(int lvl)
 		break;
 	case 2:
 		cout << "level 1" << endl;
+		//isInMenu = false;
 		loadLevel(lvl);
 
 		levelRunning = true;
 		runCardThreads();
+		runLevelButtonThreads();
 		break;
 	case 3:
 		cout << "Level 2" << endl;
@@ -73,6 +75,7 @@ void runLevel(int lvl)
 
 		levelRunning = true;
 		runCardThreads();
+		runLevelButtonThreads();
 		break;
 	case 4:
 		cout << "Level 3" << endl;
@@ -80,6 +83,7 @@ void runLevel(int lvl)
 
 		levelRunning = true;
 		runCardThreads();
+		runLevelButtonThreads();
 		break;
 	case 5:
 		cout << "Credits" << endl;

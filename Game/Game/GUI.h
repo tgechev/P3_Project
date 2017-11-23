@@ -6,13 +6,14 @@
 using namespace cv;
 using namespace std;
 
+extern Mat testTemp;
 
 void mainMenu();
 void loadLevel(int lvl);
 void loadCredits();
 void callBackFuncCredits(int event, int x, int y, int flags, void* userdata);
 void callBackFuncMenu(int event, int x, int y, int flags, void* userdata);
-void Confirm(vector<int> vectInput, int level);
+void Confirm(vector<int> vectInput, int level, Mat orgImg);
 void callBackFunc(int event, int x, int y, int flags, void* userdata);
 void loadTutorial(int ntut);
 void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata);

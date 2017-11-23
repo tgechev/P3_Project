@@ -117,7 +117,7 @@ void loadTutorial(int ntut) {
 
 	Mat tutorial;
 
-	tutorial = imread("images/Tutorial" + to_string(ntut) +".jpg", CV_LOAD_IMAGE_COLOR);
+	tutorial = imread("images/Tutorial/Tutorial" + to_string(ntut) +".jpg", CV_LOAD_IMAGE_COLOR);
 
 
 	//making the buttons
@@ -302,6 +302,7 @@ void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata)
 
 				levelRunning = true;
 				runCardThreads();
+				runLevelButtonThreads();
 			}
 		}
 	}
@@ -335,7 +336,9 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 		if (btnExit.contains(Point(x, y)))
 		{
 			cout << "Exit12" << endl;
-			//isInMenu = false;
+			isInMenu = false;
+
+
 			destroyAllWindows();
 		}
 		else {
