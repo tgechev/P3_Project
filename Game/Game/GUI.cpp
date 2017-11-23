@@ -42,6 +42,8 @@ vector<int> cardResultsPositive = { 1,1,1,1 };
 vector< vector<string> > chordsVec;
 vector< vector<string> > songVec;
 vector<string> lvlVec;
+vector<string> RNumVec;
+
 //Window name
 string winName = "EXCITING GAME";
 
@@ -59,7 +61,8 @@ void getTextData() {
 	vector<string> song2 = { "Madonna", "La Isla Bonita" };
 	vector<string> song3 = {"Ray Charles", "Hit the road, Jack"};
 	lvlVec = {"Tutorial", "Level 1", "Level 2", "Level 3"};
-	
+
+	RNumVec = { "I", "II", "III", "IV", "V", "VI", "VII" };
 	chordsVec = {LvlT, Lvl1, Lvl2, Lvl3};
 	songVec = { songT, song1, song2, song3 };
 }
@@ -67,7 +70,7 @@ void getTextData() {
 void setTextSongInfo(int lvl, Mat image) {
 	getTextData();
 	int fontFace = FONT_HERSHEY_SIMPLEX;
-	double fontScale = 0.7;
+	double fontScale = 0.5;
 	int thickness = 2;
 	int baseline = 0;
 	string artist = songVec.at(lvl-1).at(0);
@@ -82,21 +85,27 @@ void setTextSongInfo(int lvl, Mat image) {
 }
 
 void setTextChords(int lvl, Mat image) {
+
 	getTextData();
 	string chord = "";
+	string RNumText = "";
 	int fontFace = FONT_HERSHEY_SIMPLEX;
 	double fontScale = 1.2;
+	double fontscaleRNum = 0.8;
 	int thickness = 2;
 	int baseline = 0;
 	Size textSize = getTextSize(chord, fontFace, fontScale, thickness, &baseline);
+	Size textSizeRnum = getTextSize(chord, fontFace, fontScale, thickness, &baseline);
 	baseline += thickness;
-	
-	for (size_t i = 0; i < chordsVec.at(lvl-1).size(); i++) {
-		chord = chordsVec.at(lvl-1).at(i);
-		Point textOrg(((120*(i+1))-textSize.width/2), 650);
-		putText(image, chord, textOrg, fontFace, fontScale,	Scalar::all(255), thickness, 8);	
+
+	for (size_t i = 0; i < chordsVec.at(lvl - 1).size(); i++) {
+		chord = chordsVec.at(lvl - 1).at(i);
+		RNumText = RNumVec.at(i);
+		Point textOrg(((120 * (i + 1)) - textSize.width / 2), 650);
+		Point textRum(((120 * (i + 1)) - textSizeRnum.width / 2), 585);
+		putText(image, chord, textOrg, fontFace, fontScale, Scalar::all(255), thickness, 8);
+		putText(image, RNumText, textRum, fontFace, fontscaleRNum, Scalar::all(255), thickness, 8);
 	}
-	
 }
 
 void setLvlText(int lvl, Mat image) {
