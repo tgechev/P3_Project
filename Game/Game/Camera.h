@@ -12,5 +12,6 @@ public:
 	Camera();
 	cv::Mat getCameraFrame();
 	cv::VideoCapture getStream();
+	void closeStream();
 };
 #endif

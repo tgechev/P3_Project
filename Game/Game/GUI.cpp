@@ -281,6 +281,7 @@ void callBackFuncCredits(int event, int x, int y, int flags, void* userdata)
 	{
 		if (btnBack.contains(Point(x, y)))
 		{
+			isInCreditsOrTheory = false;
 			cout << "Back!" << endl;
 			setLvl(0);
 			isInMenu = true;
@@ -305,13 +306,13 @@ void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata)
 			else {
 				setTut(0);
 				cout << getTut() << endl;
-				//setLvl(2);
 				
 				loadLevel(1);
 
+				waitKey(1000);
+				//RepeatSong();
 				levelRunning = true;
-				runCardThreads();
-				runLevelButtonThreads();
+				runLevelThreads();
 			}
 		}
 	}

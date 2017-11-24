@@ -1,6 +1,7 @@
 #include "Levels.h"
 #include "Cards.h"
 #include "GUI.h"
+#include "Sounds.h"
 
 vector<int> getCorrectCards(int lvl) {
 	vector<int> correctCards;
@@ -59,6 +60,8 @@ void runLevel(int lvl)
 	case 1:
 		cout << "Tutorial level!" << endl;
 		loadTutorial(getTut());
+		isInCreditsOrTheory = true;
+		runCreditsOrTheoryThread(false);
 		break;
 	case 2:
 		cout << "level 1" << endl;
@@ -66,28 +69,35 @@ void runLevel(int lvl)
 		loadLevel(lvl);
 
 		levelRunning = true;
-		runCardThreads();
-		runLevelButtonThreads();
+
+		waitKey(1000);
+		//RepeatSong();
+		runLevelThreads();
 		break;
 	case 3:
 		cout << "Level 2" << endl;
 		loadLevel(lvl);
 
+		waitKey(1000);
+		//RepeatSong();
 		levelRunning = true;
-		runCardThreads();
-		runLevelButtonThreads();
+		runLevelThreads();
 		break;
 	case 4:
 		cout << "Level 3" << endl;
 		loadLevel(lvl);
 
+		waitKey(1000);
+		//RepeatSong();
 		levelRunning = true;
-		runCardThreads();
-		runLevelButtonThreads();
+		runLevelThreads();
 		break;
 	case 5:
 		cout << "Credits" << endl;
 		loadCredits();
+
+		isInCreditsOrTheory = true;
+		runCreditsOrTheoryThread(true);
 		break;
 	default:
 		cout << "Invalid level" << endl;

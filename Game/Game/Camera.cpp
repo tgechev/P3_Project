@@ -19,3 +19,6 @@ Camera::Camera() {
 cv::VideoCapture Camera::getStream() {
 	return camStream;
 }
+void Camera::closeStream() {
+	camStream.release();
+}
