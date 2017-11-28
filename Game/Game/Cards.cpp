@@ -35,9 +35,9 @@ Mat segmentROI(Mat frame) {
 
 	cvtColor(frame, segmentedROI, CV_BGR2GRAY);  //convert frame to grayscale
 
-	medianBlur(segmentedROI, segmentedROI, 3);     //blur the grayscale frame to remove noise as much as possible
+	medianBlur(segmentedROI, segmentedROI, 5);     //blur the grayscale frame to remove noise as much as possible
 
-
+	segmentedROI = histogramStretching(segmentedROI);
 
 	//threshold(segmentedROI, segmentedROI, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);  //threshold grayscale frame
 
@@ -50,32 +50,76 @@ Mat segmentROI(Mat frame, int buttonId) {
 
 	Mat segmentedROI;
 
-	if (buttonId == MENU_LVL3) {
+	if (levelRunning) {
+
 		cvtColor(frame, segmentedROI, CV_BGR2GRAY);  //convert frame to grayscale
 
-		imwrite("grayButton.jpg", segmentedROI);
+		//imwrite("grayButton.jpg", segmentedROI);
 
 		medianBlur(segmentedROI, segmentedROI, 5);     //blur the grayscale frame to remove noise as much as possible
 
-		imwrite("medianBlurButton.jpg", segmentedROI);
+		imwrite("blurred_slot" + to_string(buttonId) + ".jpg", segmentedROI);
+
+		segmentedROI = histogramStretching(segmentedROI);
+
+		imwrite("stretched_slot" + to_string(buttonId) + ".jpg", segmentedROI);
 
 		//threshold(segmentedROI, segmentedROI, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);  //threshold grayscale frame
 
 		threshold(segmentedROI, segmentedROI, 85, 255, CV_THRESH_BINARY_INV);  //threshold grayscale frame
 
-		imwrite("thresholdButtonOtsu.jpg", segmentedROI);
+		imwrite("threshold_slot" + to_string(buttonId) + ".jpg", segmentedROI);
 	}
 	else {
 		cvtColor(frame, segmentedROI, CV_BGR2GRAY);  //convert frame to grayscale
 
-		medianBlur(segmentedROI, segmentedROI, 3);     //blur the grayscale frame to remove noise as much as possible
+		medianBlur(segmentedROI, segmentedROI, 5);     //blur the grayscale frame to remove noise as much as possible
+
+		segmentedROI = histogramStretching(segmentedROI);
 
 		//threshold(segmentedROI, segmentedROI, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);  //threshold grayscale frame
 
 		threshold(segmentedROI, segmentedROI, 85, 255, CV_THRESH_BINARY_INV);  //threshold grayscale frame
+
 	}
 
 	return segmentedROI;
+}
+
+Mat histogramStretching(Mat frame) {
+
+	int pixelOI;
+	int lowestPixel = 255;
+	int highestPixel = 0;
+
+	for (int y = 0; y < frame.rows; y++) {		//row
+		for (int x = 0; x < frame.cols; x++) {	//column
+			pixelOI = frame.at<unsigned char>(y, x);	//Assign current pixel's value to pixelOI
+
+														//histogram[pixelOI]++;	//Increases the amount/number of pixels (from the line above) in the corresponding value in the array index
+														//E.g. pixelIO = 32, then the index coresponding to the pixel value 32 will increase by one 
+														//(frequency in the histogram increases for the specific intencity/index/pixel value)
+
+
+			if (pixelOI < lowestPixel) {		//If the pixel which is being looked at (pixelOI) has a lower value than the lowest recorded ...
+				lowestPixel = pixelOI;			//...pixel value so far, this will be the new lowest pixel value 
+			}
+			if (pixelOI > highestPixel) {		//The same as above is done here, just with the highest number instead
+				highestPixel = pixelOI;
+			}
+		} //end for
+	} //end for
+
+	Mat output = frame.clone();
+
+	for (int y = 0; y < frame.rows; y++) {
+		for (int x = 0; x < frame.cols; x++) {
+			pixelOI = frame.at<unsigned char>(y, x);
+			output.at<unsigned char>(y, x) = (255 / (highestPixel - lowestPixel)) * (pixelOI - lowestPixel); //stretching math applied here (see p.53 in IP book eq 4.11)
+		} //end for
+	} //end for
+
+	return output;
 }
 
 vector<vector<Point>> sortBlobs(vector<vector<Point>> blobs) {
@@ -117,8 +161,8 @@ void detectMenuBlobs(Camera* myCamera, Rect mbROI, int buttonId, thread &thread)
 	//Mat mbThresholdedFrame;
 	Mat menuButtonMat;
 
-	namedWindow("menuCam" + to_string(buttonId), 1);
-	moveWindow("menuCam" + to_string(buttonId), 30, 30);
+	//namedWindow("menuCam" + to_string(buttonId), 1);
+	//moveWindow("menuCam" + to_string(buttonId), 30, 30);
 
 	//Run the while loop only if in Menu screen
 	while (isInMenu) {
@@ -129,7 +173,7 @@ void detectMenuBlobs(Camera* myCamera, Rect mbROI, int buttonId, thread &thread)
 		
 		menuButtonMat = Mat(mbCameraFrame, mbROI);
 
-		menuButtonMat = segmentROI(menuButtonMat, buttonId);
+		menuButtonMat = segmentROI(menuButtonMat);
 
 		//Mat cnt_img = Mat::zeros(mbCameraFrame.rows, mbCameraFrame.cols, CV_8UC3);   //matrix for displaying frame with blob detection
 
@@ -166,7 +210,7 @@ void detectMenuBlobs(Camera* myCamera, Rect mbROI, int buttonId, thread &thread)
 
 			rectangle(mbCameraFrame, mbROI, Scalar(255, 0, 0), 2);
 
-			imshow("menuCam" + to_string(buttonId), mbCameraFrame);
+			//imshow("menuCam" + to_string(buttonId), mbCameraFrame);
 			
 			for (int i = 0; i < MENU_BUT_NUM; i++) {
 				if (menuBlobs.size()==1 && !isButtonClicked) {
@@ -188,89 +232,90 @@ void detectMenuBlobs(Camera* myCamera, Rect mbROI, int buttonId, thread &thread)
 }
 
 void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread) {
+	
 
-	bool isChordPlayed = false;
-	vector<vector<Point> > slotBlobs;
+		bool isChordPlayed = false;
+		vector<vector<Point> > slotBlobs;
 
-	Mat cameraFrame;
-	Mat cardSlotMat;
+		Mat cameraFrame;
+		Mat cardSlotMat;
 
-	//namedWindow("contours" + to_string(slot.id), 1);
-	//namedWindow("cam" + to_string(slot.id), 1);
-	//moveWindow("cam" + to_string(slot.id), 50, 50);
+		//namedWindow("contours" + to_string(slot.id), 1);
+		namedWindow("cam" + to_string(slot.id), 1);
+		moveWindow("cam" + to_string(slot.id), 50, 50);
 
-	//Run the while loop only if in level screen
-	while (levelRunning) {
+		//Run the while loop only if in level screen
+		while (levelRunning) {
 
-		waitKey(500);
+			waitKey(500);
 
-		cameraFrame = myCamera->getCameraFrame();
+			cameraFrame = myCamera->getCameraFrame();
 
-		cardSlotMat = Mat(cameraFrame, cardROI);
+			cardSlotMat = Mat(cameraFrame, cardROI);
 
-		cardSlotMat = segmentROI(cardSlotMat);
+			cardSlotMat = segmentROI(cardSlotMat, slot.id);
 
-		//if (slot.id == 3) {
-		//	imwrite("thirdslot.jpg", cardSlotMat);
-		//}
+			//if (slot.id == 3) {
+			//	imwrite("thirdslot.jpg", cardSlotMat);
+			//}
 
-		Mat cnt_img = Mat::zeros(cameraFrame.rows, cameraFrame.cols, CV_8UC3);   //matrix for displaying frame with blob detection
+			Mat cnt_img = Mat::zeros(cameraFrame.rows, cameraFrame.cols, CV_8UC3);   //matrix for displaying frame with blob detection
 
-		findContours(cardSlotMat, slotBlobs, noArray(), RETR_LIST, CHAIN_APPROX_NONE);  //find blobs in the roiMatrix
+			findContours(cardSlotMat, slotBlobs, noArray(), RETR_LIST, CHAIN_APPROX_NONE);  //find blobs in the roiMatrix
 
-		if (slotBlobs.size() != 0) {
+			if (slotBlobs.size() != 0) {
 
 
-			slotBlobs = sortBlobs(slotBlobs);
+				slotBlobs = sortBlobs(slotBlobs);
 
-			slotBlobs = filterBlobs(slotBlobs, 30, 1000);
+				slotBlobs = filterBlobs(slotBlobs, 40, 800);
 
-			Scalar color(188, 255, 255);
-			for (size_t i = 0; i < slotBlobs.size(); i++)
-			{
+				Scalar color(188, 255, 255);
+				for (size_t i = 0; i < slotBlobs.size(); i++)
+				{
 
-				//drawContours(cnt_img, slotBlobs, i, color, -1, 8, noArray(), 2, Point(cardROI.x, cardROI.y));
+					//drawContours(cnt_img, slotBlobs, i, color, -1, 8, noArray(), 2, Point(cardROI.x, cardROI.y));
 
-				Rect boundingBox = boundingRect(slotBlobs[i]);
-				boundingBox += Point(cardROI.x, cardROI.y);
+					Rect boundingBox = boundingRect(slotBlobs[i]);
+					boundingBox += Point(cardROI.x, cardROI.y);
 
-				rectangle(cameraFrame, boundingBox, Scalar(255, 0, 0), 2);
-			}
-		}
-
-		//draw ROI in camera frame
-		rectangle(cameraFrame, cardROI, Scalar(255, 0, 0), 2);
-
-		//imshow("cam" + to_string(slot.id), cameraFrame);           //show color frame
-
-		//imshow("thresholded frame", thresholdedFrame);
-
-		//imshow("contours" + to_string(slot.id), cnt_img);        //show blob detection frame
-
-		for (int i = 0; i < SLOTS_NUM; i++) {
-			if (slot.id == i + 1) {
-				if (slotBlobs.size() != 0 && !isChordPlayed) {
-
-					slot.chord = slotBlobs.size();
-					PlayChord(slot.chord);
-
-					isChordPlayed = true;
-					curCards.at(i) = slot.chord;
-
-				}
-				else if (slotBlobs.size() == 0 && isChordPlayed) {
-					isChordPlayed = false;
-
-					curCards.at(i) = 0;
+					rectangle(cameraFrame, boundingBox, Scalar(255, 0, 0), 2);
 				}
 			}
-			cout << "slot " << i + 1 << ": " << curCards.at(i) << endl;
-		}
 
-		if (waitKey(30) >= 0)
-			break;
+			//draw ROI in camera frame
+			rectangle(cameraFrame, cardROI, Scalar(255, 0, 0), 2);
 
-	}//end while
+			imshow("cam" + to_string(slot.id), cameraFrame);           //show color frame
+
+			//imshow("thresholded frame", thresholdedFrame);
+
+			//imshow("contours" + to_string(slot.id), cnt_img);        //show blob detection frame
+
+			for (int i = 0; i < SLOTS_NUM; i++) {
+				if (slot.id == i + 1) {
+					if (slotBlobs.size() != 0 && !isChordPlayed) {
+
+						slot.chord = slotBlobs.size();
+						PlayChord(slot.chord);
+
+						isChordPlayed = true;
+						curCards.at(i) = slot.chord;
+
+					}
+					else if (slotBlobs.size() == 0 && isChordPlayed) {
+						isChordPlayed = false;
+
+						curCards.at(i) = 0;
+					}
+				}
+				cout << "slot " << i + 1 << ": " << curCards.at(i) << endl;
+			}
+
+			if (waitKey(30) >= 0)
+				break;
+
+		}//end while
 
 	thread.detach();
 }
@@ -347,8 +392,8 @@ void detectTimelineButtonBlobs(Camera* myCamera, Rect pbROI, int buttonId, threa
 	Mat pbCameraFrame;
 	Mat pbMat;
 
-	namedWindow("pbCam" + to_string(buttonId), 1);
-	moveWindow("pbCam" + to_string(buttonId), 50, 50);
+	//namedWindow("pbCam" + to_string(buttonId), 1);
+	//moveWindow("pbCam" + to_string(buttonId), 50, 50);
 
 	while (levelRunning) {
 
@@ -380,7 +425,7 @@ void detectTimelineButtonBlobs(Camera* myCamera, Rect pbROI, int buttonId, threa
 
 			rectangle(pbCameraFrame, pbROI, Scalar(255, 0, 0), 2);
 
-			imshow("pbCam" + to_string(buttonId), pbCameraFrame);
+			//imshow("pbCam" + to_string(buttonId), pbCameraFrame);
 
 			for (int i = 0; i < MENU_BUT_NUM; i++) {
 				if (pbBlobs.size() == 1 && !isTimelineButtonClicked) {
@@ -406,12 +451,12 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 	Mat crMat;
 	int lastSize = 0;
 
-	namedWindow("crCam", 1);
-	moveWindow("crCam", 50, 50);
+	//namedWindow("crCam", 1);
+	//moveWindow("crCam", 50, 50);
 
 	while (isInCreditsOrTheory) {
 
-		cout << "credits thread here" << endl;
+		//cout << "credits thread here" << endl;
 
 		waitKey(500);
 
@@ -478,7 +523,7 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 
 
 		}
-		imshow("crCam", crCameraFrame);
+		//imshow("crCam", crCameraFrame);
 
 		if (waitKey(30) >= 0)
 			break;
@@ -509,6 +554,12 @@ void runMenuThreads() {
 }
 
 void runLevelThreads() {
+
+	//int slotsN = SLOTS_NUM;
+
+	//if (getLvl() == 1) {
+	//	slotsN--;
+	//}
 
 	Camera* myCam = new Camera();
 
@@ -545,8 +596,6 @@ void runLevelThreads() {
 
 		pbRoiStartX += pbRoiShiftX;
 	}
-
-
 }
 
 void runCreditsOrTheoryThread(bool isInCredits) {

@@ -71,7 +71,7 @@ void runLevel(int lvl)
 		levelRunning = true;
 
 		waitKey(1000);
-		//RepeatSong();
+		RepeatSong();
 		runLevelThreads();
 		break;
 	case 3:
@@ -79,7 +79,7 @@ void runLevel(int lvl)
 		loadLevel(lvl);
 
 		waitKey(1000);
-		//RepeatSong();
+		RepeatSong();
 		levelRunning = true;
 		runLevelThreads();
 		break;
@@ -88,7 +88,7 @@ void runLevel(int lvl)
 		loadLevel(lvl);
 
 		waitKey(1000);
-		//RepeatSong();
+		RepeatSong();
 		levelRunning = true;
 		runLevelThreads();
 		break;

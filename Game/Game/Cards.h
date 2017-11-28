@@ -53,7 +53,7 @@ Mat segmentROI(Mat frame);
 
 Mat segmentROI(Mat frame, int buttonId);
 
-
+Mat histogramStretching(Mat frame);
 
 void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread);
 

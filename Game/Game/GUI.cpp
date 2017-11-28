@@ -310,7 +310,7 @@ void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata)
 				loadLevel(1);
 
 				waitKey(1000);
-				//RepeatSong();
+				RepeatSong();
 				levelRunning = true;
 				runLevelThreads();
 			}
@@ -347,6 +347,7 @@ void callBackFuncMenu(int event, int x, int y, int flags, void* userdata)
 		{
 			cout << "Exit12" << endl;
 			isInMenu = false;
+			isInCreditsOrTheory = false;
 
 
 			destroyAllWindows();
