@@ -185,7 +185,7 @@ void detectMenuBlobs(Camera* myCamera, Rect mbROI, int buttonId, thread &thread)
 
 			menuBlobs = sortBlobs(menuBlobs);
 
-			menuBlobs = filterBlobs(menuBlobs, 30, 800);
+			menuBlobs = filterBlobs(menuBlobs, 100, 500);
 
 			/*
 			for (size_t i = 0; i < mbFoundBlobs.size(); i++)
@@ -268,7 +268,7 @@ void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread)
 
 				slotBlobs = sortBlobs(slotBlobs);
 
-				slotBlobs = filterBlobs(slotBlobs, 40, 800);
+				slotBlobs = filterBlobs(slotBlobs, 100, 500);
 
 				Scalar color(188, 255, 255);
 				for (size_t i = 0; i < slotBlobs.size(); i++)
@@ -348,7 +348,7 @@ void detectLevelButtonBlobs(Camera* myCamera, Rect lbROI, int buttonId, thread &
 
 			lbBlobs = sortBlobs(lbBlobs);
 
-			lbBlobs = filterBlobs(lbBlobs, 30, 800);
+			lbBlobs = filterBlobs(lbBlobs, 100, 500);
 
 			//drawing bounding box
 			Scalar color(188, 255, 255);
@@ -410,7 +410,7 @@ void detectTimelineButtonBlobs(Camera* myCamera, Rect pbROI, int buttonId, threa
 
 			pbBlobs = sortBlobs(pbBlobs);
 
-			pbBlobs = filterBlobs(pbBlobs, 60, 600);
+			pbBlobs = filterBlobs(pbBlobs, 100, 500);
 
 			//drawing bounding box
 			Scalar color(188, 255, 255);
@@ -472,7 +472,7 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 
 			crBlobs = sortBlobs(crBlobs);
 
-			crBlobs = filterBlobs(crBlobs, 60, 600);
+			crBlobs = filterBlobs(crBlobs, 100, 500);
 
 			//drawing bounding box
 			Scalar color(188, 255, 255);
