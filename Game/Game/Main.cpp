@@ -8,15 +8,30 @@ using namespace cv;
 
 int main()
 {
+	int misreadChord = 0;
 
 	runLevel(getLvl());
 
-	waitKey(0);
+	
 
-	//while (true) {
+	while (true) {
+		int keycode = waitKey(30);
+		if (keycode == 's') {
+			Camera* myCam = new Camera();
 
-
-	//}
+			myCam->getStream().set(CV_CAP_PROP_SETTINGS, 0.0);
+		}
+		else if (keycode == '+') {
+			misreadChord++;
+			cout << "misread chord: " << misreadChord << endl;
+		}
+		else if (keycode == ' ') {
+			cout << "misread chord: "<<misreadChord << endl;
+		}
+		else if (keycode == '-') {
+			misreadChord = 0;
+		}
+	}
 
 	return 0;
 }
