@@ -58,17 +58,17 @@ Mat segmentROI(Mat frame, int buttonId) {
 
 		medianBlur(segmentedROI, segmentedROI, 5);     //blur the grayscale frame to remove noise as much as possible
 
-		imwrite("blurred_slot" + to_string(buttonId) + ".jpg", segmentedROI);
+		imwrite("blurred_" + to_string(buttonId) + ".jpg", segmentedROI);
 
 		segmentedROI = histogramStretching(segmentedROI);
 
-		imwrite("stretched_slot" + to_string(buttonId) + ".jpg", segmentedROI);
+		imwrite("stretched_" + to_string(buttonId) + ".jpg", segmentedROI);
 
 		//threshold(segmentedROI, segmentedROI, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);  //threshold grayscale frame
 
 		threshold(segmentedROI, segmentedROI, 85, 255, CV_THRESH_BINARY_INV);  //threshold grayscale frame
 
-		imwrite("threshold_slot" + to_string(buttonId) + ".jpg", segmentedROI);
+		imwrite("threshold_" + to_string(buttonId) + ".jpg", segmentedROI);
 	}
 	else {
 		cvtColor(frame, segmentedROI, CV_BGR2GRAY);  //convert frame to grayscale
@@ -175,6 +175,8 @@ void detectMenuBlobs(Camera* myCamera, Rect mbROI, int buttonId, thread &thread)
 
 		menuButtonMat = segmentROI(menuButtonMat);
 
+		//menuButtonMat = segmentROI(menuButtonMat, buttonId);
+
 		//Mat cnt_img = Mat::zeros(mbCameraFrame.rows, mbCameraFrame.cols, CV_8UC3);   //matrix for displaying frame with blob detection
 
 		findContours(menuButtonMat, menuBlobs, noArray(), RETR_LIST, CHAIN_APPROX_NONE);
@@ -253,7 +255,9 @@ void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread)
 
 			cardSlotMat = Mat(cameraFrame, cardROI);
 
-			cardSlotMat = segmentROI(cardSlotMat, slot.id);
+			//cardSlotMat = segmentROI(cardSlotMat, slot.id);
+
+			cardSlotMat = segmentROI(cardSlotMat);
 
 			//if (slot.id == 3) {
 			//	imwrite("thirdslot.jpg", cardSlotMat);
@@ -342,6 +346,8 @@ void detectLevelButtonBlobs(Camera* myCamera, Rect lbROI, int buttonId, thread &
 
 		lbMat = segmentROI(lbMat);
 
+		//lbMat = segmentROI(lbMat, buttonId);
+
 		findContours(lbMat, lbBlobs, noArray(), RETR_LIST, CHAIN_APPROX_NONE);
 
 		if (lbBlobs.size() != 0) {
@@ -402,7 +408,9 @@ void detectTimelineButtonBlobs(Camera* myCamera, Rect pbROI, int buttonId, threa
 
 		pbMat = Mat(pbCameraFrame, pbROI);
 
-		pbMat = segmentROI(pbMat);
+		//pbMat = segmentROI(pbMat);
+
+		pbMat = segmentROI(pbMat, buttonId);
 
 		findContours(pbMat, pbBlobs, noArray(), RETR_LIST, CHAIN_APPROX_NONE);
 
@@ -465,6 +473,8 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 		crMat = Mat(crCameraFrame, bROI);
 
 		crMat = segmentROI(crMat);
+
+		//crMat = segmentROI(crMat, buttonId);
 
 		findContours(crMat, crBlobs, noArray(), RETR_LIST, CHAIN_APPROX_NONE);
 
