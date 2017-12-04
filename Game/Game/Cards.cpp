@@ -189,16 +189,6 @@ void detectMenuBlobs(Camera* myCamera, Rect mbROI, int buttonId, thread &thread)
 
 			menuBlobs = filterBlobs(menuBlobs, 100, 500);
 
-			/*
-			for (size_t i = 0; i < mbFoundBlobs.size(); i++)
-			{
-				double circularity = 4 * M_PI*contourArea(mbFoundBlobs[i]) / pow(arcLength(mbFoundBlobs[i], true), 2);
-
-				if (contourArea(mbFoundBlobs[i]) >= 30 && contourArea(mbFoundBlobs[i]) <= 800 && circularity > 0.8) {
-					mbFilteredBlobs.push_back(mbFoundBlobs[i]);
-				}
-			}*/
-
 			//drawing bounding box
 			Scalar color(188, 255, 255);
 			for (size_t i = 0; i < menuBlobs.size(); i++)
@@ -243,8 +233,8 @@ void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread)
 		Mat cardSlotMat;
 
 		//namedWindow("contours" + to_string(slot.id), 1);
-		namedWindow("cam" + to_string(slot.id), 1);
-		moveWindow("cam" + to_string(slot.id), 50, 50);
+		//namedWindow("cam" + to_string(slot.id), 1);
+		//moveWindow("cam" + to_string(slot.id), 50, 50);
 
 		//Run the while loop only if in level screen
 		while (levelRunning) {
@@ -290,7 +280,7 @@ void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread)
 			//draw ROI in camera frame
 			rectangle(cameraFrame, cardROI, Scalar(255, 0, 0), 2);
 
-			imshow("cam" + to_string(slot.id), cameraFrame);           //show color frame
+			//imshow("cam" + to_string(slot.id), cameraFrame);           //show color frame
 
 			//imshow("thresholded frame", thresholdedFrame);
 
@@ -520,7 +510,7 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 						loadLevel(1);
 
 						waitKey(1000);
-						//RepeatSong();
+						RepeatSong();
 						isInCreditsOrTheory = false;
 						levelRunning = true;
 						runLevelThreads();
@@ -565,12 +555,6 @@ void runMenuThreads() {
 
 void runLevelThreads() {
 
-	//int slotsN = SLOTS_NUM;
-
-	//if (getLvl() == 1) {
-	//	slotsN--;
-	//}
-
 	Camera* myCam = new Camera();
 
 	if (!myCam->getStream().isOpened()) { //check if video device has been initialised
@@ -591,8 +575,6 @@ void runLevelThreads() {
 	//make vector of level button ROIs
 	for (int i = 0; i < 3; i++) {
 		lbROIs.push_back(Rect(lbRoiStartX, lbRoiY, lbRoiW, lbRoiH));
-
-		//slots[i].id = i + 1;
 
 		lbThread[i] = thread(detectLevelButtonBlobs, myCam, lbROIs[i], i + 1, ref(lbThread[i]));
 
@@ -615,6 +597,7 @@ void runCreditsOrTheoryThread(bool isInCredits) {
 	if (!myCam->getStream().isOpened()) { //check if video device has been initialised
 		cout << "cannot open camera";
 	}
+
 	crThROI = Rect(crRoiX, crRoiY, crRoiW, crRoiH);
 	crThThread = thread(detectCreditsOrTheoryBlobs, myCam, crThROI, ref(crThThread), isInCredits);
 }
@@ -631,12 +614,15 @@ void checkMenuButton(int buttonId) {
 		break;
 	case MENU_LVL1:
 		setLvl(2);
+		curCards = { 0,0,0,0 };
 		break;
 	case MENU_LVL2:
 		setLvl(3);
+		curCards = { 0,0,0,0 };
 		break;
 	case MENU_LVL3:
 		setLvl(4);
+		curCards = { 0,0,0,0 };
 		break;
 	case MENU_CREDITS:
 		setLvl(5);
@@ -655,6 +641,7 @@ void checkLevelButton(int buttonId) {
 		setTut(1);
 		levelRunning = false;
 		runLevel(getLvl());
+		curCards = { 0,0,0,0 };
 		break;
 	case 2:
 		Confirm(getCurCards(), getLvl(), testTemp);
