@@ -200,7 +200,7 @@ void detectMenuBlobs(Camera* myCamera, Rect mbROI, int buttonId, thread &thread)
 				rectangle(mbCameraFrame, boundingBox, Scalar(255, 0, 0), 2);
 			}
 
-			rectangle(mbCameraFrame, mbROI, Scalar(255, 0, 0), 2);
+			//rectangle(mbCameraFrame, mbROI, Scalar(255, 0, 0), 2);
 
 			//imshow("menuCam" + to_string(buttonId), mbCameraFrame);
 			
@@ -278,7 +278,7 @@ void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread)
 			}
 
 			//draw ROI in camera frame
-			rectangle(cameraFrame, cardROI, Scalar(255, 0, 0), 2);
+			//rectangle(cameraFrame, cardROI, Scalar(255, 0, 0), 2);
 
 			//imshow("cam" + to_string(slot.id), cameraFrame);           //show color frame
 
@@ -357,7 +357,7 @@ void detectLevelButtonBlobs(Camera* myCamera, Rect lbROI, int buttonId, thread &
 				rectangle(lbCameraFrame, boundingBox, Scalar(255, 0, 0), 2);
 			}
 
-			rectangle(lbCameraFrame, lbROI, Scalar(255, 0, 0), 2);
+			//rectangle(lbCameraFrame, lbROI, Scalar(255, 0, 0), 2);
 
 			//imshow("lbCam" + to_string(buttonId), lbCameraFrame);
 
@@ -421,7 +421,7 @@ void detectTimelineButtonBlobs(Camera* myCamera, Rect pbROI, int buttonId, threa
 				rectangle(pbCameraFrame, boundingBox, Scalar(255, 0, 0), 2);
 			}
 
-			rectangle(pbCameraFrame, pbROI, Scalar(255, 0, 0), 2);
+			//rectangle(pbCameraFrame, pbROI, Scalar(255, 0, 0), 2);
 
 			//imshow("pbCam" + to_string(buttonId), pbCameraFrame);
 
@@ -454,7 +454,6 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 
 	while (isInCreditsOrTheory) {
 
-		//cout << "credits thread here" << endl;
 
 		waitKey(500);
 
@@ -485,7 +484,7 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 				rectangle(crCameraFrame, boundingBox, Scalar(255, 0, 0), 2);
 			}
 
-			rectangle(crCameraFrame, bROI, Scalar(255, 0, 0), 2);
+			//rectangle(crCameraFrame, bROI, Scalar(255, 0, 0), 2);
 
 			//imshow("crCam", crCameraFrame);
 
