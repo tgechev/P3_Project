@@ -90,19 +90,21 @@ void setTextChords(int lvl, Mat image) {
 	string chord = "";
 	string RNumText = "";
 	int fontFace = FONT_HERSHEY_SIMPLEX;
-	double fontScale = 1.2;
-	double fontscaleRNum = 0.8;
+	double fontScale = 0.9;
+	double fontscaleRNum = 1.4;
 	int thickness = 2;
 	int baseline = 0;
-	Size textSize = getTextSize(chord, fontFace, fontScale, thickness, &baseline);
-	Size textSizeRnum = getTextSize(chord, fontFace, fontScale, thickness, &baseline);
-	baseline += thickness;
+	
+	//baseline += thickness;
 
 	for (size_t i = 0; i < chordsVec.at(lvl - 1).size(); i++) {
 		chord = chordsVec.at(lvl - 1).at(i);
 		RNumText = RNumVec.at(i);
-		Point textOrg(((120 * (i + 1)) - textSize.width / 2), 650);
-		Point textRum(((120 * (i + 1)) - textSizeRnum.width / 2), 585);
+		Size textSize = getTextSize(chord, fontFace, fontScale, thickness, &baseline);
+		Size textSizeRnum = getTextSize(RNumText, fontFace, fontscaleRNum, thickness, &baseline);
+		Point textOrg((((image.cols / 8) * (i + 1)) - (textSize.width / 2)), 610);
+		Point textRum((((image.cols / 8) * (i + 1)) - (textSizeRnum.width / 2)), 680);
+		
 		putText(image, chord, textOrg, fontFace, fontScale, Scalar::all(255), thickness, 8);
 		putText(image, RNumText, textRum, fontFace, fontscaleRNum, Scalar::all(255), thickness, 8);
 	}
