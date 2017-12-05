@@ -25,6 +25,8 @@ vector<Rect> lbROIs;
 vector<Rect> pbROIs;
 Rect crThROI;
 
+Camera* myCam = new Camera();
+
 vector<int> getCurCards() {
 	return curCards;
 }
@@ -454,6 +456,8 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 
 	while (isInCreditsOrTheory) {
 
+		cout << "crTh thread here" << endl;
+
 
 		waitKey(500);
 
@@ -503,7 +507,7 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 						lastSize = 1;
 					}
 					else if(getTut() > 11 && lastSize == 0){
-						setTut(0);
+						setTut(6); //6 for skipping theory slides/1 for including theory slides
 						//cout << getTut() << endl;
 
 						loadLevel(1);
@@ -533,7 +537,7 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 
 void runMenuThreads() {
 
-	Camera* myCam = new Camera();
+	//Camera* myCam = new Camera();
 
 	if (!myCam->getStream().isOpened()) { //check if video device has been initialised
 		cout << "cannot open camera";
@@ -554,7 +558,7 @@ void runMenuThreads() {
 
 void runLevelThreads() {
 
-	Camera* myCam = new Camera();
+	//Camera* myCam = new Camera();
 
 	if (!myCam->getStream().isOpened()) { //check if video device has been initialised
 		cout << "cannot open camera";
@@ -591,7 +595,7 @@ void runLevelThreads() {
 
 void runCreditsOrTheoryThread(bool isInCredits) {
 
-	Camera* myCam = new Camera();
+	//Camera* myCam = new Camera();
 
 	if (!myCam->getStream().isOpened()) { //check if video device has been initialised
 		cout << "cannot open camera";
@@ -637,7 +641,7 @@ void checkLevelButton(int buttonId) {
 	case 1:
 		setLvl(0);
 
-		setTut(1);
+		setTut(6); //6 for skipping theory slides/1 for including theory slides
 		levelRunning = false;
 		runLevel(getLvl());
 		curCards = { 0,0,0,0 };

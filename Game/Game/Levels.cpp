@@ -28,7 +28,7 @@ vector<int> getCorrectCards(int lvl) {
 }
 
 int level = 0;
-int tutlevel = 1;
+int tutlevel = 6; //6 for skipping theory slides/1 for including theory slides
 
 //LEVEL STUFF
 int getLvl() {

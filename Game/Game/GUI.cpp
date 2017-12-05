@@ -248,7 +248,7 @@ void callBackFunc(int event, int x, int y, int flags, void* userdata)
 			cout << "Back!" << endl;
 			setLvl(0);
 
-			setTut(1);
+			setTut(6); //6 for skipping theory slides/1 for including theory slides
 			levelRunning = false;
 			runLevel(getLvl());
 		}
@@ -306,10 +306,12 @@ void callBackFuncTutorial(int event, int x, int y, int flags, void* userdata)
 			}
 
 			else {
-				setTut(0);
+				setTut(6); //6 for skipping theory slides/1 for including theory slides
 				cout << getTut() << endl;
 				
 				loadLevel(1);
+
+				isInCreditsOrTheory = false;
 
 				waitKey(1000);
 				RepeatSong();
