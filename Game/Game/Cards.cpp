@@ -156,6 +156,11 @@ vector<vector<Point>> filterBlobs(vector<vector<Point>> blobs, int minArea, int 
 
 void detectMenuBlobs(Camera* myCamera, Rect mbROI, int buttonId, thread &thread) {
 
+	int frame_width = myCamera->getStream().get(CV_CAP_PROP_FRAME_WIDTH);
+	int frame_height = myCamera->getStream().get(CV_CAP_PROP_FRAME_HEIGHT);
+
+	VideoWriter video("menu_button" + to_string(buttonId) + ".avi", CV_FOURCC('M', 'J', 'P', 'G'), 15, Size(frame_width, frame_height), true);
+
 	bool isButtonClicked = false;
 
 	vector<vector<Point> > menuBlobs;
@@ -202,7 +207,9 @@ void detectMenuBlobs(Camera* myCamera, Rect mbROI, int buttonId, thread &thread)
 				rectangle(mbCameraFrame, boundingBox, Scalar(255, 0, 0), 2);
 			}
 
-			//rectangle(mbCameraFrame, mbROI, Scalar(255, 0, 0), 2);
+			rectangle(mbCameraFrame, mbROI, Scalar(255, 0, 0), 2);
+
+			video.write(mbCameraFrame);
 
 			//imshow("menuCam" + to_string(buttonId), mbCameraFrame);
 			
@@ -226,6 +233,12 @@ void detectMenuBlobs(Camera* myCamera, Rect mbROI, int buttonId, thread &thread)
 }
 
 void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread) {
+
+	int frame_width = myCamera->getStream().get(CV_CAP_PROP_FRAME_WIDTH);
+	int frame_height = myCamera->getStream().get(CV_CAP_PROP_FRAME_HEIGHT);
+
+	VideoWriter video("level" + to_string(getLvl()-1) + "_card_slot" + to_string(slot.id) + ".avi", CV_FOURCC('M', 'J', 'P', 'G'), 15, Size(frame_width, frame_height), true);
+
 	
 
 		bool isChordPlayed = false;
@@ -279,9 +292,11 @@ void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread)
 				}
 			}
 
+			
 			//draw ROI in camera frame
-			//rectangle(cameraFrame, cardROI, Scalar(255, 0, 0), 2);
+			rectangle(cameraFrame, cardROI, Scalar(255, 0, 0), 2);
 
+			video.write(cameraFrame);
 			//imshow("cam" + to_string(slot.id), cameraFrame);           //show color frame
 
 			//imshow("thresholded frame", thresholdedFrame);
@@ -317,6 +332,11 @@ void detectCards(Camera* myCamera, Rect cardROI, cardSlot &slot, thread &thread)
 }
 
 void detectLevelButtonBlobs(Camera* myCamera, Rect lbROI, int buttonId, thread &thread) {
+
+	int frame_width = myCamera->getStream().get(CV_CAP_PROP_FRAME_WIDTH);
+	int frame_height = myCamera->getStream().get(CV_CAP_PROP_FRAME_HEIGHT);
+
+	VideoWriter video("level" + to_string(getLvl()-1) + "_level_button" + to_string(buttonId) + ".avi", CV_FOURCC('M', 'J', 'P', 'G'), 15, Size(frame_width, frame_height), true);
 
 	bool isLevelButtonClicked = false;
 	vector<vector<Point> > lbBlobs;
@@ -359,7 +379,11 @@ void detectLevelButtonBlobs(Camera* myCamera, Rect lbROI, int buttonId, thread &
 				rectangle(lbCameraFrame, boundingBox, Scalar(255, 0, 0), 2);
 			}
 
-			//rectangle(lbCameraFrame, lbROI, Scalar(255, 0, 0), 2);
+			
+
+			rectangle(lbCameraFrame, lbROI, Scalar(255, 0, 0), 2);
+
+			video.write(lbCameraFrame);
 
 			//imshow("lbCam" + to_string(buttonId), lbCameraFrame);
 
@@ -385,6 +409,11 @@ void detectLevelButtonBlobs(Camera* myCamera, Rect lbROI, int buttonId, thread &
 
 void detectTimelineButtonBlobs(Camera* myCamera, Rect pbROI, int buttonId, thread &thread) {
 
+	int frame_width = myCamera->getStream().get(CV_CAP_PROP_FRAME_WIDTH);
+	int frame_height = myCamera->getStream().get(CV_CAP_PROP_FRAME_HEIGHT);
+
+	VideoWriter video("level" + to_string(getLvl()-1) + "_timeline_button" + to_string(buttonId) + ".avi", CV_FOURCC('M', 'J', 'P', 'G'), 15, Size(frame_width, frame_height), true);
+
 	bool isTimelineButtonClicked = false;
 	vector<vector<Point>> pbBlobs;
 	Mat pbCameraFrame;
@@ -400,9 +429,9 @@ void detectTimelineButtonBlobs(Camera* myCamera, Rect pbROI, int buttonId, threa
 
 		pbMat = Mat(pbCameraFrame, pbROI);
 
-		//pbMat = segmentROI(pbMat);
+		pbMat = segmentROI(pbMat);
 
-		pbMat = segmentROI(pbMat, buttonId);
+		//pbMat = segmentROI(pbMat, buttonId);
 
 		findContours(pbMat, pbBlobs, noArray(), RETR_LIST, CHAIN_APPROX_NONE);
 
@@ -423,7 +452,11 @@ void detectTimelineButtonBlobs(Camera* myCamera, Rect pbROI, int buttonId, threa
 				rectangle(pbCameraFrame, boundingBox, Scalar(255, 0, 0), 2);
 			}
 
-			//rectangle(pbCameraFrame, pbROI, Scalar(255, 0, 0), 2);
+			
+
+			rectangle(pbCameraFrame, pbROI, Scalar(255, 0, 0), 2);
+
+			video.write(pbCameraFrame);
 
 			//imshow("pbCam" + to_string(buttonId), pbCameraFrame);
 
@@ -445,6 +478,11 @@ void detectTimelineButtonBlobs(Camera* myCamera, Rect pbROI, int buttonId, threa
 }
 
 void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, bool isInCredits) {
+
+	int frame_width = myCamera->getStream().get(CV_CAP_PROP_FRAME_WIDTH);
+	int frame_height = myCamera->getStream().get(CV_CAP_PROP_FRAME_HEIGHT);
+
+	VideoWriter video("crThNextButton.avi", CV_FOURCC('M', 'J', 'P', 'G'), 15, Size(frame_width, frame_height), true);
 
 	vector<vector<Point>> crBlobs;
 	Mat crCameraFrame;
@@ -488,7 +526,9 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 				rectangle(crCameraFrame, boundingBox, Scalar(255, 0, 0), 2);
 			}
 
-			//rectangle(crCameraFrame, bROI, Scalar(255, 0, 0), 2);
+			rectangle(crCameraFrame, bROI, Scalar(255, 0, 0), 2);
+
+			video.write(crCameraFrame);
 
 			//imshow("crCam", crCameraFrame);
 
@@ -514,6 +554,10 @@ void detectCreditsOrTheoryBlobs(Camera* myCamera, Rect bROI, thread &thread, boo
 
 						waitKey(1000);
 						RepeatSong();
+
+						waitKey(1100);
+						playAllChords();
+
 						isInCreditsOrTheory = false;
 						levelRunning = true;
 						runLevelThreads();

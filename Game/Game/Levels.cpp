@@ -72,24 +72,35 @@ void runLevel(int lvl)
 
 		waitKey(1000);
 		RepeatSong();
+		waitKey(1100);
+		playAllChords();
+
 		runLevelThreads();
 		break;
 	case 3:
 		cout << "Level 2" << endl;
 		loadLevel(lvl);
 
+		levelRunning = true;
+
 		waitKey(1000);
 		RepeatSong();
-		levelRunning = true;
+		waitKey(1100);
+		playAllChords();
+		
 		runLevelThreads();
 		break;
 	case 4:
 		cout << "Level 3" << endl;
 		loadLevel(lvl);
 
+		levelRunning = true;
+
 		waitKey(1000);
 		RepeatSong();
-		levelRunning = true;
+		waitKey(1100);
+		playAllChords();
+
 		runLevelThreads();
 		break;
 	case 5:
