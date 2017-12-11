@@ -7,7 +7,7 @@ using namespace cv;
 using namespace std;
 
 extern Mat testTemp;
-
+//declare the functions so they can be reference to other files
 void mainMenu();
 void loadLevel(int lvl);
 void loadCredits();

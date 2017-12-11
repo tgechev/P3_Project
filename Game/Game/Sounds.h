@@ -5,9 +5,9 @@
 #include <SFML/Audio.hpp>
 #include <SFML/System.hpp>
 
-//using namespace cv;
+//set namespace, so "std::" doesn't need to be written all the time.
 using namespace std;
-
+//Declare the functions to be used later in other files.
 void RepeatSong();
 void PlayChord(int chord);
 void PlaySnippet(int snipNum);
